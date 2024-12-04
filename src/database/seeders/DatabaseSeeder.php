@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
        $this->call([
         AcademicYearSeeder::class,
-        GradeSeeder::class
+        GradeSeeder::class,
+        SubjectSeeder::class,
+        SectionSeeder::class,
+        TimeTableSeeder::class,
        ]);
     }
 }

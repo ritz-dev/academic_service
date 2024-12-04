@@ -18,11 +18,15 @@ return new class extends Migration
             $table->string('attendee_type');
             $table->enum('status', ['present', 'absent', 'late'])->default('present');
             $table->date('date');
+            $table->string('previous_hash');
+            $table->string('hash');
             $table->text('remarks')->nullable();
             $table->timestamps();
 
             $table->softDeletes();
             $table->index(['attendee_id', 'attendee_type']);
+            $table->index(['timetable_id','attendee_id', 'attendee_type']);
+
         });
     }
 

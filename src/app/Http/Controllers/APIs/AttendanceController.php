@@ -5,10 +5,18 @@ namespace App\Http\Controllers\APIs;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
+use App\Services\BlockChainService;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
+    protected $blockchainService;
+
+    public function __construct(BlockChainService $blockchainService)
+    {
+        $this->blockchainService = $blockchainService;
+    }
+
     public function index()
     {
         $attendance =  Attendance::with(['timetable'])->get();
@@ -27,7 +35,19 @@ class AttendanceController extends Controller
             'remarks' => 'nullable|string',
         ]);
     
-        $attendance = Attendance::create($request->all());
+        $previousHash = $this->blockchainService->getPreviousHash(Attendance::class);
+        $timestamp = now();
+        $calculatedHash = $this->blockchainService->calculateHash(
+            $previousHash,
+            json_encode($request->all()),
+            $timestamp->format('Y-m-d H:i:s')
+        );
+
+        $attendanceData = $request->all();
+        $attendanceData['previous_hash'] = $previousHash;
+        $attendanceData['hash'] = $calculatedHash;
+
+        $attendance = Attendance::create($attendanceData);
     
         return response()->json($attendance,200);
     }

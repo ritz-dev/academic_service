@@ -9,7 +9,7 @@ class Attendance extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['timetable_id', 'attendee_id', 'attendee_type', 'status', 'date', 'remarks'];
+    protected $fillable = ['timetable_id', 'attendee_id', 'attendee_type', 'status', 'date', 'remarks','hash','previous_hash'];
 
     protected $hidden = ["created_at","updated_at","deleted_at"];
 
