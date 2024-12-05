@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APIs;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GradeResource;
 use App\Models\Grade;
+use Exception;
 use Illuminate\Http\Request;
 
 class GradeController extends Controller
@@ -14,17 +15,12 @@ class GradeController extends Controller
      */
     public function index()
     {
-        $gradeAll = Grade::All();
-
-        return response()->json(GradeResource::collection($gradeAll));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        try {
+            $gradeAll = Grade::All();
+            return response()->json(GradeResource::collection($gradeAll), 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to fetch grades');
+        }
     }
 
     /**
@@ -32,13 +28,17 @@ class GradeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'grade' => 'required|string|unique:grades'
-        ]);
+        try {
+            $request->validate([
+                'grade' => 'required|string|unique:grades'
+            ]);
 
-        $grade = Grade::create($request->all());
-
-        return response()->json($grade, 200);
+            $grade = Grade::create($request->all());
+            
+            return response()->json($grade, 201); // 201 Created
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to create grade');
+        }
     }
 
     /**
@@ -46,21 +46,17 @@ class GradeController extends Controller
      */
     public function show(string $id)
     {
-        $grade = Grade::find($id);
+        try {
+            $grade = Grade::findOrFail($id);
 
-        if(!$grade) {
-            return response()->json(['message'=>'Grede not found', 404]);
+            if (!$grade) {
+                return response()->json(['message' => 'Grade not found'], 404);
+            }
+
+            return response()->json($grade, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to fetch the grade');
         }
-
-        return response()->json($grade, 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -68,19 +64,22 @@ class GradeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $grade = Grade::find($id);
+        try {
+            $grade = Grade::findOrFail($id);
 
-        if(!$grade) {
-            return response()->json(['message'=> 'Grade not found', 404]);
+            if (!$grade) {
+                return response()->json(['message' => 'Grade not found'], 404);
+            }
+
+            $request->validate([
+                'grade' => 'required|string|unique:grades,grade,' . $id
+            ]);
+
+            $grade->update($request->all());
+            return response()->json($grade, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to update the grade');
         }
-
-        $request-> validate([
-            'grade' => 'required|string|unique:grade'
-        ]);
-
-        $grade->update($request->all());
-
-        return response()->json($grade, 200);
     }
 
     /**
@@ -88,14 +87,12 @@ class GradeController extends Controller
      */
     public function destroy(string $id)
     {
-        $grade = Grade::find($id);
-
-        if(!$grade) {
-            return response()->json(['message' => 'Grade not found']);
+        try {
+            $grade = Grade::findOrFail($id);
+            $grade->delete();
+            return response()->json(['message' => 'Grade deleted successfully'], 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to delete the grade');
         }
-
-        $grade->delete();
-
-        return response()->json(['message' => 'Grade deleted successfully'], 200);
     }
 }

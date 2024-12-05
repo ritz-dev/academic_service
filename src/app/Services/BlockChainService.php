@@ -14,5 +14,6 @@ class  BlockChainService
         $lastCertificate = $model::orderBy('id', 'desc')->first();
         return $lastCertificate ? $lastCertificate->hash : '0000000000000000000000000000000000000000000000000000000000000000';
     }
+
 }
 

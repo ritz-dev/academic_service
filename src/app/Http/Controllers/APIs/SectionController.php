@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APIs;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Exception;
 
 class SectionController extends Controller
 {
@@ -13,17 +14,15 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections = Section::all();
+        try {
 
-        return response()->json($sections, 200);
-    }
+            $sections = Section::all();
+            return response()->json($sections, 200);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        } catch (Exception $e) {
+            
+            return $this->handleException($e, 'Failed to fetch sections');
+        }
     }
 
     /**
@@ -31,17 +30,22 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'academic_year_id' => 'required|exists:academic_years,id',
-            'teacher_id' => 'required|string'
-        ],[
-            'name.unique' => 'This class already exists for the selected academic year.'
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'academic_year_id' => 'required|exists:academic_years,id',
+                'teacher_id' => 'required|string'
+            ], [
+                'name.unique' => 'This class already exists for the selected academic year.'
+            ]);
 
-        $section = Section::create($request->all());
+            $section = Section::create($request->all());
 
-        return response()->json($section, 200);
+            return response()->json($section, 200);
+
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to create section');
+        }
     }
 
     /**
@@ -49,22 +53,14 @@ class SectionController extends Controller
      */
     public function show(string $id)
     {
-        $section = Section::find($id);
+        try {
+            $section = Section::findOrFail($id);
 
-        if(!$section) {
-            return response()->json(['message'=> 'Class not found'], 404);
+            return response()->json($section, 200);
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to fetch the class');
         }
-
-        return response()->json($section, 200);
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -72,23 +68,23 @@ class SectionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $section = Section::find($id);
+        try {
+            $section = Section::findOrFail($id);
 
-        if(!$section) {
-            return response()->json(['message' => 'Class not found'], 404);
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'academic_year_id' => 'required|exists:academic_years,id',
+                'teacher_id' => 'required|string'
+            ], [
+                'name.unique' => 'This class already exists for the selected academic year.'
+            ]);
+
+            $section->update($request->all());
+
+            return response()->json($section, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to update the class');
         }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'academic_year_id' => 'required|exists:academic_years,id',
-            'teacher_id' => 'required|string'
-        ],[
-            'name.unique' => 'This class already exists for the selected academic year.'
-        ]);
-
-        $section->update($request->all());
-
-        return response()->json($section,200);
     }
 
     /**
@@ -96,14 +92,14 @@ class SectionController extends Controller
      */
     public function destroy(string $id)
     {
-        $section = Section::find($id);
+        try {
+            $section = Section::findOrFail($id);
 
-        if(!$section) {
-            return response()->json(['message' => 'Class not found'], 404);
+            $section->delete();
+
+            return response()->json(['message' => 'Class deleted successfully'], 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to delete the class');
         }
-
-        $section->delete();
-
-        return response()->json(['message' => 'Class deleted successfully'], 200);
     }
 }

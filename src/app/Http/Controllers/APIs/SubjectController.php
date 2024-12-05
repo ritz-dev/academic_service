@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APIs;
 use App\Http\Controllers\Controller;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Exception;
 
 class SubjectController extends Controller
 {
@@ -13,17 +14,12 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::all();
-
-        return response()->json($subjects, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        try {
+            $subjects = Subject::all();
+            return response()->json($subjects, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to fetch subjects');
+        }
     }
 
     /**
@@ -31,15 +27,19 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'code' => 'required|string|unique:subjects,code',
-            'description' => 'nullable|string',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string',
+                'code' => 'required|string|unique:subjects,code',
+                'description' => 'nullable|string',
+            ]);
 
-        $subject = Subject::create($request->all());
+            $subject = Subject::create($request->all());
 
-        return response()->json($subject, 200);
+            return response()->json($subject, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to create subject');
+        }
     }
 
     /**
@@ -47,21 +47,13 @@ class SubjectController extends Controller
      */
     public function show(string $id)
     {
-        $subject = Subject::find($id);
+        try {
+            $subject = Subject::findorFail($id);
 
-        if($subject) {
-            return response()->json(['message'=> 'Subject not found'], 404);
+            return response()->json($subject, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to fetch the subject');
         }
-
-        return response()->json($subject, 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -69,21 +61,21 @@ class SubjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $subject = Subject::find($id);
+        try {
+            $subject = Subject::findorFail($id);
 
-        if(!$subject) {
-            return response()->json(['message'=>'Subject not found']);
+            $request->validate([
+                'name' => 'required|string',
+                'code' => 'required|string|unique:subjects,code',
+                'description' => 'nullable|string',
+            ]);
+
+            $subject->update($request->all());
+
+            return response()->json($subject, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to update the subject');
         }
-
-        $request->validate([
-            'name' => 'required|string',
-            'code' => 'required|string|unique:subjects,code',
-            'description' => 'nullable|string',
-        ]);
-
-        $subject->update($request->all());
-
-        return response()->json($subject, 200);
     }
 
     /**
@@ -91,14 +83,14 @@ class SubjectController extends Controller
      */
     public function destroy(string $id)
     {
-        $subject = Subject::find($id);
+        try {
+            $subject = Subject::findOrFail($id);
 
-        if(!$subject) {
-            return response()->json(['message' => 'Subject not found'], 404);
+            $subject->delete();
+
+            return response()->json(['message' => 'Subject deleted successfully'], 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to delete the subject');
         }
-
-        $subject->delete();
-
-        return response()->json(['message' => 'Subject deleted successfully'], 200);
     }
 }

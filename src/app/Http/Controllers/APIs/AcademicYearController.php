@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APIs;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
 use App\Models\AcademicYear;
+use Exception;
 use Illuminate\Http\Request;
 
 class AcademicYearController extends Controller
@@ -14,9 +15,14 @@ class AcademicYearController extends Controller
      */
     public function index()
     {
-        $academicYearsAll = AcademicYear::all();
-        
-        return response()->json(AcademicYearResource::collection($academicYearsAll));
+        try {
+            $academicYearsAll = AcademicYear::all();
+            return response()->json(AcademicYearResource::collection($academicYearsAll), 200);
+
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to fetch academic years');
+        }
     }
 
     /**
@@ -32,15 +38,20 @@ class AcademicYearController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'year' => 'required|string|unique:academic_years',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-        ]);
+        try {
+            $request->validate([
+                'year' => 'required|string|unique:academic_years',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after:start_date',
+            ]);
 
-        $academicYear = AcademicYear::create($request->all());
+            $academicYear = AcademicYear::create($request->all());
+            return response()->json($academicYear, 201); // 201 Created
 
-        return response()->json($academicYear, 200);
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to create academic year');
+        }
     }
 
     /**
@@ -48,13 +59,14 @@ class AcademicYearController extends Controller
      */
     public function show(string $id)
     {
-        $academicYears = AcademicYear::find($id);
+        try {
+            $academicYear = AcademicYear::findOrFail($id);
+            return response()->json($academicYear, 200);
 
-        if($academicYears) {
-            return response()->json(['message'=> 'Academic year not found'], 404);
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to fetch the academic year');
         }
-
-        return response()->json($academicYears, 200);
     }
 
     /**
@@ -70,21 +82,22 @@ class AcademicYearController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $academicYears = AcademicYear::find($id);
+        try {
+            $academicYear = AcademicYear::findOrFail($id);
 
-        if(!$academicYears) {
-            return response()->json(['message'=> 'Academic year not found'], 404);
+            $validatedData = $request->validate([
+                'year' => 'required|string|unique:academic_years,year,' . $id,
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after:start_date',
+            ]);
+
+            $academicYear->update($validatedData);
+
+            return response()->json($academicYear, 200);
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to update the academic year');
         }
-
-        $request->validate([
-            'year' => 'required|string|unique:academic_years,year,' . $id,
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-        ]);
-
-        $academicYears->update($request->all());
-
-        return response()->json($academicYears, 200);
     }
 
     /**
@@ -92,14 +105,14 @@ class AcademicYearController extends Controller
      */
     public function destroy(string $id)
     {
-        $academicYears = AcademicYear::find($id);
+        try {
+            $academicYear = AcademicYear::findOrFail($id);
+            $academicYear->delete();
 
-        if(!$academicYears) {
-            return response()->json(['message' => 'Academic year not found'], 404);
+            return response()->json(['message' => 'Academic year deleted successfully'], 200);
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to delete the academic year');
         }
-
-        $academicYears->delete();
-
-        return response()->json(['message' => 'Academic year deleted successfully'], 200);
     }
 }
