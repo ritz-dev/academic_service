@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('issue_date');
             $table->date('expiry_date')->nullable();
             $table->string('issued_by');
+            $table->string('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->text('additional_details')->nullable();
             $table->json('grade_details');
             $table->timestamps();

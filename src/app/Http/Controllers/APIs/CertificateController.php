@@ -28,6 +28,7 @@ class CertificateController extends Controller
                 'issue_date' => 'required|date',
                 'expiry_date' => 'nullable|date',
                 'issued_by' => 'required|string',
+                'academic_year_id' => 'required|exists:academic_years,id',
                 'additional_details' => 'nullable|string',
                 'grade_details' => 'required|array',  // Array of grades
             ]);

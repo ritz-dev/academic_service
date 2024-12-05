@@ -13,4 +13,8 @@ class AcademicYear extends Model
 
     protected $hidden = ["created_at","updated_at","deleted_at"];
     
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
 }

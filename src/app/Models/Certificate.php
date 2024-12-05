@@ -16,4 +16,9 @@ class Certificate extends Model
     protected $casts = [
         'grade_details' => 'array',  // Automatically cast grade details to array
     ];
+
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
 }
