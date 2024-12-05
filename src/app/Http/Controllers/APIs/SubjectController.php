@@ -48,7 +48,7 @@ class SubjectController extends Controller
     public function show(string $id)
     {
         try {
-            $subject = Subject::findorFail($id);
+            $subject = Subject::findOrFail($id);
 
             return response()->json($subject, 200);
         } catch (Exception $e) {
@@ -62,7 +62,7 @@ class SubjectController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $subject = Subject::findorFail($id);
+            $subject = Subject::findOrFail($id);
 
             $request->validate([
                 'name' => 'required|string',

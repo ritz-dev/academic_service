@@ -34,7 +34,7 @@ class GradeController extends Controller
             ]);
 
             $grade = Grade::create($request->all());
-            
+
             return response()->json($grade, 201); // 201 Created
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to create grade');
