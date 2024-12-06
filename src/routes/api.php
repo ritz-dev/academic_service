@@ -3,6 +3,7 @@
 use App\Http\Controllers\APIs\AcademicYearController;
 use App\Http\Controllers\APIs\AttendanceController;
 use App\Http\Controllers\APIs\CertificateController;
+use App\Http\Controllers\APIs\ExamController;
 use App\Http\Controllers\APIs\GradeController;
 use App\Http\Controllers\APIs\SectionController;
 use App\Http\Controllers\APIs\SubjectController;
@@ -19,6 +20,7 @@ Route::apiResource('grades', GradeController::class);
 Route::apiResource('subjects', SubjectController::class);
 Route::apiResource('classes', SectionController::class);
 Route::apiResource('time-tables', TimeTableController::class);
+Route::apiResource('exams',ExamController::class);
 Route::get('attendances', [AttendanceController::class, 'index']);
 Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
 Route::post('certificates', [CertificateController::class, 'addCertificate']);

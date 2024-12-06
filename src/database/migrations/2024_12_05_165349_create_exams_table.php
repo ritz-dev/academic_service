@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->string('student_id');
-            $table->string('certificate_type');
-            $table->date('issue_date');
-            $table->date('expiry_date')->nullable();
-            $table->string('issued_by');
+            $table->string('name')->unique();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->foreignId('grade_id')->constrianed('grades')->onDelete('cascade');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
-            $table->text('additional_details')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('certificates');
+        Schema::dropIfExists('exams');
     }
 };

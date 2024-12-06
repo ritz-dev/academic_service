@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        Schema::create('exam_student_assignments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('exam_schedule_id')->constrained('exam_schedules')->onDelete('cascade');
             $table->string('student_id');
-            $table->string('certificate_type');
-            $table->date('issue_date');
-            $table->date('expiry_date')->nullable();
-            $table->string('issued_by');
-            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
-            $table->text('additional_details')->nullable();
+            $table->string('status')->default('not_answered');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('certificates');
+        Schema::dropIfExists('exam_student_assignments');
     }
 };

@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('exam_schedules', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('teacher_id');
-            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
+            $table->foreignId('exam_id')->constrained('exams')->onDelete('cascade');
+            $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
+            $table->sting('subject');
+            $table->date('date');
+            $table->string('start_time');
+            $table->string('end_time');
             $table->timestamps();
             $table->softDeletes();
-            //Adding composite unique constraint on name and academic_year_id
-            $table->index(['name','academic_year_id']);
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sections');
+        Schema::dropIfExists('exam_schedules');
     }
 };
