@@ -1,9 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-
-use App\Models\AcademicYear;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,6 +18,10 @@ class DatabaseSeeder extends Seeder
         SubjectSeeder::class,
         SectionSeeder::class,
         TimeTableSeeder::class,
+        ExamSeeder::class,
+        ExamScheduleSeeder::class,
+        ExamTeacherAssignmentSeeder::class,
+        ExamStudentAssignmentSeeder::class
        ]);
     }
 }

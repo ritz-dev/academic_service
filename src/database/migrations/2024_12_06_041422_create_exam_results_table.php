@@ -19,6 +19,7 @@ return new class extends Migration
             $table->int('mark');
             $table->string('grade');
             $table->date('date');
+            $table->string('result');
             $table->string('hash');
             $table->string('previous_hash');
             $table->timestamps();

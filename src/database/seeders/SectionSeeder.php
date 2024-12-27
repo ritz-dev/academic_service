@@ -14,8 +14,16 @@ class SectionSeeder extends Seeder
     public function run(): void
     {
         Section::create([
-            'name' => 'Grade10A',
+            'name' => 'A',
+            'grade_id' => 1,
             'teacher_id' => 1,
+            'academic_year_id' => 1,
+        ]);
+
+        Section::create([
+            'name' => 'B',
+            'grade_id' => 1,
+            'teacher_id' => 2,
             'academic_year_id' => 1,
         ]);
     }

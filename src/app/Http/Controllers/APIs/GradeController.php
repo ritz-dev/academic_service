@@ -15,18 +15,12 @@ class GradeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $blockchainService;
-
-    public function __construct(BlockChainService $blockchainService)
-    {
-        $this->blockchainService = $blockchainService;
-    }
 
     public function index()
     {
         try {
             $gradeAll = Grade::All();
-            return response()->json(GradeResource::collection($gradeAll), 200);
+            return response()->json($gradeAll);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to fetch grades');
         }
@@ -38,29 +32,12 @@ class GradeController extends Controller
     public function store(Request $request)
     {
         try {
+
             $request->validate([
-                'student_id' => 'required|exists:students,id',
-                'exam_id' => 'required|exists:exams,id',
-                'subject_id' => 'required|exists:subjects,id',
-                'mark' => 'required|integer|min:0|max:100',
-                'date' => 'required|date',
-                'grade' => 'required|string|max:10',
+                'name' => 'required|string',
             ]);
 
-            $previousHash = $this->blockchainService->getPreviousHash(Grade::class);
-            $timestamp = now();
-            $calculatedHash = $this->blockchainService->calculateHash(
-                $previousHash,
-                json_encode($request->all()),
-                $timestamp->format('Y-m-d H:i:s')
-            );
-
-            $gradeData = $request->all();
-            $gradeData['previous_hash'] = $previousHash;
-            $gradeData['hash'] = $calculatedHash;
-
-
-            $grade = Grade::create($gradeData);
+            $grade = Grade::create($request->all());
 
             return response()->json($grade, 201); // 201 Created
         } catch (Exception $e) {
@@ -73,7 +50,12 @@ class GradeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            $grade = Grade::findOrFail($id);
+            return response()->json($grade, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to fetch the grade');
+        }
     }
 
     /**
@@ -81,7 +63,19 @@ class GradeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try{
+            $grade = Grade::findOrFail($id);
+
+            $request->validate([
+                'name' => 'required|string',
+            ]);
+
+            $grade->update($request->all());
+
+            return response()->json($grade, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to update the grade.');
+        }
     }
 
     /**
@@ -89,44 +83,14 @@ class GradeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-    }
+        try {
+            $grade = Grade::findOrFail($id);
 
-    public function verifyGrade(Request $request)
-    {
-        // Find the grade by its ID
-        $grade = Grade::findOrFail($request->id);
+            $grade->delete();
 
-        if (!$grade) {
-            return response()->json(['message' => 'grade not found'], 404);
+            return response()->json(['message' => 'Grade deleted successfully']);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to delete the exam');
         }
-
-        // Convert timestamp to Carbon instance if it's stored as a string
-        $timestamp = Carbon::parse($grade->timestamp);
-
-        // Recalculate hash based on grade data
-        $calculatedHash = $this->blockchainService->calculateHash(
-            $grade->previous_hash,
-            json_encode($grade),
-            $timestamp->format('Y-m-d H:i:s') // Ensure timestamp is formatted correctly
-        );
-
-        // Compare the calculated hash with the stored hash
-        if ($calculatedHash !== $grade->hash) {
-            return response()->json(['message' => 'Grade has been tampered with'], 400);
-        }
-
-        // Check if the previous hash matches the previous Grade's hash (if it exists)
-        if ($grade->previous_hash === '0000000000000000000000000000000000000000000000000000000000000000') {
-            return response()->json(['message' => 'Grade is valid and verified'], 200);
-        }
-
-        $previousGrade= Grade::where('hash', $grade->previous_hash)->first();
-
-        if ($previousGrade) {
-            return response()->json(['message' => 'Grade is valid and verified'], 200);
-        }
-
-        return response()->json(['message' => 'Invalid Grade chain'], 400);
     }
 }

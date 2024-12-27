@@ -15,8 +15,14 @@ class SubjectSeeder extends Seeder
     {
         Subject::create([
             'name' => 'Math',
-            'code' => 'Math101',
+            'code' => 'M-101',
             'description' => 'Mathematic of Grade 10'
+        ]);
+
+        Subject::create([
+            'name' => 'English',
+            'code' => 'E-101',
+            'description' => 'English of Grade 10'
         ]);
     }
 }

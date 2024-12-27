@@ -34,6 +34,7 @@ class SectionController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'academic_year_id' => 'required|exists:academic_years,id',
+                'grade_id'=> 'required|exists:grades,id',
                 'teacher_id' => 'required|string'
             ], [
                 'name.unique' => 'This class already exists for the selected academic year.'
@@ -74,6 +75,7 @@ class SectionController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'academic_year_id' => 'required|exists:academic_years,id',
+                'grade_id'=> 'required|exists:grades,id',
                 'teacher_id' => 'required|string'
             ], [
                 'name.unique' => 'This class already exists for the selected academic year.'

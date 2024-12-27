@@ -40,6 +40,7 @@ class ExamController extends Controller
                 'name' => 'required|string',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
+                'grade_id' => 'required|exists:grades,id',
                 'academic_year_id' => 'required|exists:academic_years,id',
             ]);
 
@@ -58,7 +59,6 @@ class ExamController extends Controller
     {
         try {
             $exam = Exam::findOrFail($id);
-
             return response()->json($exam, 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to fetch the exam');
@@ -85,6 +85,7 @@ class ExamController extends Controller
                 'name' => 'required|string',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
+                'grade_id' => 'required|exists:grades,id',
                 'academic_year_id' => 'required|exists:academic_years,id',
             ]);
 
