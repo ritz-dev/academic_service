@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exam_teacher_assignments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('exam_schedule_id')->constrained('exam_schedules')->onDelete('cascade'); // Links to the exam schedule
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade'); // Links to the teacher
+            $table->string('teacher_id'); // Links to the teacher
             $table->string('role')->nullable();
             $table->string('status')->default('not_answered');
             $table->timestamps();
