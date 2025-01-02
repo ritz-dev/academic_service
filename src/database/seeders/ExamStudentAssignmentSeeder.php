@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ExamTeacherAssignment;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ExamStudentAssignment;
 use Illuminate\Database\Seeder;
 
 class ExamStudentAssignmentSeeder extends Seeder
@@ -13,14 +12,14 @@ class ExamStudentAssignmentSeeder extends Seeder
      */
     public function run(): void
     {
-        ExamTeacherAssignment::create([
-            'exam_schedule_id' => 1,
-            'student_id' => 1,
+        ExamStudentAssignment::create([
+            'exam_schedule_id' => '1',
+            'student_id' => '1',
         ]);
 
-        ExamTeacherAssignment::create([
-            'exam_schedule_id' => 1,
-            'student_id' => 2,
+        ExamStudentAssignment::create([
+            'exam_schedule_id' => '1',
+            'student_id' => '2',
         ]);
     }
 }

@@ -15,8 +15,8 @@ class ExamSeeder extends Seeder
     {
         Exam::create([
             'name' => 'Grade-10 Term1',
-            'start_date' => '8-10-2024',
-            'end_date' => '13-10-2024',
+            'start_date' => '2024-10-08',
+            'end_date' => '2024-10-13',
             'grade_id' => 1,
             'academic_year_id' => 1
         ]);

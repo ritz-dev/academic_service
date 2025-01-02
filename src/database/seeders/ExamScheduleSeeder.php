@@ -17,7 +17,7 @@ class ExamScheduleSeeder extends Seeder
             'exam_id' => 1,
             'section_id' => 1,
             'subject' => 'M-101',
-            'date'=> '8-10-2024',
+            'date'=> '2024-10-08',
             'start_time' => '09:00',
             'end_time' => '12:00'
         ]);

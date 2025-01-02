@@ -14,8 +14,8 @@ class ExamTeacherAssignmentSeeder extends Seeder
     public function run(): void
     {
         ExamTeacherAssignment::create([
-            'exam_schedule_id' => 1,
-            'teacher_id' => 1,
+            'exam_schedule_id' => '1',
+            'teacher_id' => '1',
             'role' => 'Supervisor',
         ]);
     }

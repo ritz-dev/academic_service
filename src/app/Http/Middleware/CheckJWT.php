@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckJWT
@@ -18,30 +19,32 @@ class CheckJWT
     {
         $token = $request->header('Authorization');
         $userManagementServiceUrl = config('services.user_management.url') . '/validate-token';
+    
+        if (!$token) {
+            return response()->json(['error' => 'Token not provided'], 401);
+        }
 
-        if (!$token) { 
-            return response()->json(['error' => 'Token not provided'], 401); 
-        } 
-        
-        $client = new Client();
-        
-        logger($userManagementServiceUrl);
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => $token, // Pass the actual token from the request
+            ])->get($userManagementServiceUrl);
 
-        $response = $client->get($userManagementServiceUrl, [
-            'headers' => [
-                'Authorization' => $token, 
-                ] 
-            ]);
-        logger($response);
-        // try {
-            
-        // } catch (\Exception $e) { 
-        //     return response()->json(['error' => 'Service unavailable'], 503); 
-        // } 
-        //     if ($response->getStatusCode() !== 200) {
-        //         return response()->json(['error' => 'Unauthorized'], 401); 
-        // }
-            // $request->merge(['user' => json_decode($response->getBody()->getContents())]);
+            logger($response);
+
+            if ($response->failed()) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            // // Decode response and convert to array for merging
+            // $user = $response->json();
+
+            // // Ensure `user` data is merged into the request
+            // $request->merge(['user' => $user]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Service unavailable', 'details' => $e->getMessage()], 503);
+        }
 
         return $next($request);
     }
