@@ -30,17 +30,9 @@ class CheckJWT
                 'Authorization' => $token, // Pass the actual token from the request
             ])->get($userManagementServiceUrl);
 
-            logger($response);
-
             if ($response->failed()) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
-
-            // // Decode response and convert to array for merging
-            // $user = $response->json();
-
-            // // Ensure `user` data is merged into the request
-            // $request->merge(['user' => $user]);
 
         } catch (\Exception $e) {
             return response()->json(['error' => 'Service unavailable', 'details' => $e->getMessage()], 503);

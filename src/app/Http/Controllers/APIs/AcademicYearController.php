@@ -13,15 +13,62 @@ class AcademicYearController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // try {
+        //     $academicYearsAll = AcademicYear::all();
+        //     return response()->json(AcademicYearResource::collection($academicYearsAll), 200);
+
+        // } catch (Exception $e) {
+
+        //     return $this->handleException($e, 'Failed to fetch academic years');
+        // }
         try {
-            $academicYearsAll = AcademicYear::all();
-            return response()->json(AcademicYearResource::collection($academicYearsAll), 200);
+            $limit = $request->input('limit', 15);
+            $page = $request->input('page', 1);
+            $orderBy = $request->input('orderBy', 'academic_years.created_at');
+            $sortedBy = $request->input('sortedBy', 'desc');
+            $search = $request->input('search', '');
+            $offset = ($page - 1) * $limit;
 
+            $validOrderColumns = ['academic_years.created_at', 'academic_years.updated_at'];
+            $validSortDirections = ['asc', 'desc'];
+
+            $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'academic_years.created_at';
+            $sortedBy = in_array($sortedBy, $validSortDirections) ? $sortedBy : 'desc';
+
+
+            $dataArray = AcademicYear::selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
+                                academic_years.id as id,
+                                academic_years.year,
+                                academic_years.start_date as startYear,
+                                academic_years.end_date as endYear,
+                                academic_years.is_active as isActive
+                            ')
+                            ->when($search, function ($query, $search) {
+                                $query->where(function ($query) use ($search) {
+                                    $query->where('academic_years.teacher_id', 'like', "%{$search}%");
+                                });
+                            });
+
+            $total = $dataArray->get()->count();
+
+            $data = $dataArray
+                ->orderBy($orderBy, $sortedBy)
+                ->skip($offset)
+                ->take($limit)
+                ->get();
+
+            return response()->json([
+                "message" => "success",
+                "total" => $total,
+                "data" => $data
+            ]);
         } catch (Exception $e) {
-
-            return $this->handleException($e, 'Failed to fetch academic years');
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],500);
         }
     }
 
