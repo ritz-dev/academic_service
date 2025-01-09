@@ -14,8 +14,8 @@ return [
     |
     */
 
-    'user_management' => [ 
-        'url' => env('USER_MANAGEMENT_SERVICE_URL'), 
+    'api_gateway' => [ 
+        'url' => env('API_GATEWAY_SERVICE_URL'), 
     ],
 
     'postmark' => [

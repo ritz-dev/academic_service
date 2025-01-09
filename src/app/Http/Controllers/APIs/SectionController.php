@@ -32,7 +32,7 @@ class SectionController extends Controller
         }
     }
 
-    private function fetchTeacherInfo($token, $teacherId) 
+    private function fetchTeacherInfo($token, $teacherId)
     { 
         $userManagementServiceUrl = config('services.user_management.url') . '/teachers' . '/f1368b92-579e-4bfd-aded-9d5f30f058aa';
         

@@ -5,7 +5,7 @@ services:
     image: akayti/server:v1
     container_name: academic_nginx
     ports:
-      - '8001:80'
+      - '8002:80'
     volumes:
       - ./src:/var/www/html:ro
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro

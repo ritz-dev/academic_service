@@ -18,7 +18,7 @@ class CheckJWT
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->header('Authorization');
-        $userManagementServiceUrl = config('services.user_management.url') . '/validate-token';
+        $userManagementServiceUrl = config('services.api_gateway.url') . '/validate-token';
     
         if (!$token) {
             return response()->json(['error' => 'Token not provided'], 401);
@@ -27,7 +27,7 @@ class CheckJWT
         try {
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
-                'Authorization' => $token, // Pass the actual token from the request
+                'Authorization' => $token,
             ])->get($userManagementServiceUrl);
 
             if ($response->failed()) {
