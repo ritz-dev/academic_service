@@ -5,8 +5,11 @@ namespace App\Http\Controllers\APIs;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
 use App\Models\AcademicYear;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class AcademicYearController extends Controller
 {
@@ -15,14 +18,6 @@ class AcademicYearController extends Controller
      */
     public function index(Request $request)
     {
-        // try {
-        //     $academicYearsAll = AcademicYear::all();
-        //     return response()->json(AcademicYearResource::collection($academicYearsAll), 200);
-
-        // } catch (Exception $e) {
-
-        //     return $this->handleException($e, 'Failed to fetch academic years');
-        // }
         try {
             $limit = $request->input('limit', 15);
             $page = $request->input('page', 1);
@@ -41,8 +36,8 @@ class AcademicYearController extends Controller
             $dataArray = AcademicYear::selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
                                 academic_years.id as id,
                                 academic_years.year,
-                                academic_years.start_date as startYear,
-                                academic_years.end_date as endYear,
+                                academic_years.start_date as startDate,
+                                academic_years.end_date as endDate,
                                 academic_years.is_active as isActive
                             ')
                             ->when($search, function ($query, $search) {
@@ -88,11 +83,20 @@ class AcademicYearController extends Controller
         try {
             $request->validate([
                 'year' => 'required|string|unique:academic_years',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after:start_date',
+                'startDate' => 'required|date',
+                'endDate' => 'required|date|after:start_date',
             ]);
 
-            $academicYear = AcademicYear::create($request->all());
+            $startDate = Carbon::parse($request->input('startDate'))->format('Y-m-d');
+            $endDate = Carbon::parse($request->input('endDate'))->format('Y-m-d');
+
+            $academicYear = AcademicYear::create([
+                'id' => Str::uuid(),
+                'year' => $request->input('year'),
+                'start_date' => $startDate ,
+                'end_date' => $endDate
+            ]);
+
             return response()->json($academicYear, 201); // 201 Created
 
         } catch (Exception $e) {
@@ -107,7 +111,8 @@ class AcademicYearController extends Controller
     public function show(string $id)
     {
         try {
-            $academicYear = AcademicYear::findOrFail($id);
+            $data = AcademicYear::findOrFail($id);
+            $academicYear = new AcademicYearResource($data);
             return response()->json($academicYear, 200);
 
         } catch (Exception $e) {
@@ -134,11 +139,19 @@ class AcademicYearController extends Controller
 
             $validatedData = $request->validate([
                 'year' => 'required|string|unique:academic_years,year,' . $id,
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after:start_date',
+                'startDate' => 'required|date',
+                'endDate' => 'required|date|after:start_date',
             ]);
 
-            $academicYear->update($validatedData);
+            $startDate = Carbon::parse($request->input('startDate'))->format('Y-m-d');
+            $endDate = Carbon::parse($request->input('endDate'))->format('Y-m-d');
+
+
+            $academicYear->update([
+                'year' => $request->input('year'),
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+            ]);
 
             return response()->json($academicYear, 200);
         } catch (Exception $e) {

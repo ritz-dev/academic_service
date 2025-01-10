@@ -9,7 +9,7 @@ class Section extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name','teacher_id','academic_year_id','grade_id'];
+    protected $fillable = ['name','teacher_id','academic_year_id','academic_class_id'];
 
     protected $hidden = ["created_at","updated_at","deleted_at"];
 
@@ -18,8 +18,8 @@ class Section extends Model
         return $this->belongsTo(AcademicYear::class);
     }
 
-    public function grade()
+    public function academicClass()
     {
-        return $this->belongsTo(Grade::class);
+        return $this->belongsTo(AcademicClass::class);
     }
 }

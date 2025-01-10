@@ -17,7 +17,7 @@ class ExamSeeder extends Seeder
             'name' => 'Grade-10 Term1',
             'start_date' => '2024-10-08',
             'end_date' => '2024-10-13',
-            'grade_id' => 1,
+            'academic_class_id' => 1,
             'academic_year_id' => 1
         ]);
     }

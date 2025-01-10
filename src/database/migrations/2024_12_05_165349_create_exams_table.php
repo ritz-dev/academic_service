@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->date('start_date');
             $table->date('end_date');
-            $table->foreignId('grade_id')->constrianed('grades')->onDelete('cascade');
+            $table->foreignId('academic_class_id')->constrianed('academic_classes')->onDelete('cascade');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

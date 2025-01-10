@@ -14,7 +14,7 @@ class TimeTableSeeder extends Seeder
     public function run(): void
     {
         TimeTable::create([
-            'class_id' => 1,
+            'section_id' => 1,
             'subject_id' => 1,
             'teacher_id' => 1,
             'day_of_week' => 'Monday',

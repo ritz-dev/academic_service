@@ -9,7 +9,7 @@ class Exam extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name','start_date','end_date','academic_year_id','grade_id'];
+    protected $fillable = ['name','start_date','end_date','academic_year_id','academic_class_id'];
 
     protected $hidden = ["created_at","updated_at","deleted_at"];
 

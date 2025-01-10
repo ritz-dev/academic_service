@@ -9,13 +9,13 @@ class TimeTable extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['class_id','subject_id','teacher_id','day_of_week','time_start','time_end','term'];
+    protected $fillable = ['section_id','subject_id','teacher_id','day_of_week','time_start','time_end','term'];
 
     protected $hidden = ["created_at","updated_at","deleted_at"];
 
     public function class()
     {
-        return $this->belongsTo(Section::class, 'class_id');
+        return $this->belongsTo(Section::class, 'section_id');
     }
 
     public function subject()

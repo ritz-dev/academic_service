@@ -15,14 +15,14 @@ class SectionSeeder extends Seeder
     {
         Section::create([
             'name' => 'A',
-            'grade_id' => 1,
+            'academic_class_id' => 1,
             'teacher_id' => 1,
             'academic_year_id' => 1,
         ]);
 
         Section::create([
             'name' => 'B',
-            'grade_id' => 1,
+            'academic_class_id' => 1,
             'teacher_id' => 2,
             'academic_year_id' => 1,
         ]);
