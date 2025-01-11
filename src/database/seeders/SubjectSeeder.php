@@ -24,5 +24,29 @@ class SubjectSeeder extends Seeder
             'code' => 'E-101',
             'description' => 'English of Grade 10'
         ]);
+
+        Subject::create([
+            'name' => 'Myanmar',
+            'code' => 'My-101',
+            'description' => 'Myanmar of Grade 10'
+        ]);
+
+        Subject::create([
+            'name' => 'Science',
+            'code' => 'S-101',
+            'description' => 'Science of Grade 10'
+        ]);
+
+        Subject::create([
+            'name' => 'Geography',
+            'code' => 'G-101',
+            'description' => 'Geography of Grade 10'
+        ]);
+
+        Subject::create([
+            'name' => 'History',
+            'code' => 'H-101',
+            'description' => 'History of Grade 10'
+        ]);
     }
 }
