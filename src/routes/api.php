@@ -22,23 +22,12 @@ Route::group(['middleware' => ['auth.jwt']], function () {
     Route::apiResource('classes', AcademicClassController::class);
     Route::apiResource('grades', GradeController::class);
     Route::apiResource('subjects', SubjectController::class);
+    Route::apiResource('sections', SectionController::class);
     Route::apiResource('academic_class_subjects',AcademicClassSubjectController::class);
-    Route::apiResource('classes', SectionController::class);
     Route::apiResource('time-tables', TimeTableController::class);
     Route::apiResource('exams',ExamController::class);
     Route::get('attendances', [AttendanceController::class, 'index']);
-    Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
+    Route::post('attendances', [AttendanceController::class, 'recordAttendance']);  
     Route::post('certificates', [CertificateController::class, 'addCertificate']);
+    Route::post('sections/assign-teacher',[SectionController::class, 'assignTeacher']);
 });
-
-// Route::middleware('auth:employee')->group(function(){
-//     Route::apiResource('academic-years', AcademicYearController::class);
-//     Route::apiResource('grades', GradeController::class);
-//     Route::apiResource('subjects', SubjectController::class);
-//     Route::apiResource('classes', SectionController::class);
-//     Route::apiResource('time-tables', TimeTableController::class);
-//     Route::apiResource('exams',ExamController::class);
-//     Route::get('attendances', [AttendanceController::class, 'index']);
-//     Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
-//     Route::post('certificates', [CertificateController::class, 'addCertificate']);
-// });

@@ -66,7 +66,7 @@ class SectionController extends Controller
                 'grade_id'=> 'required|exists:grades,id',
                 'teacher_id' => 'required|string'
             ], [
-                'name.unique' => 'This class already exists for the selected academic year.'
+                'name.unique' => 'This section already exists for the selected class.'
             ]);
 
             $section = Section::create($request->all());
@@ -104,7 +104,7 @@ class SectionController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'academic_year_id' => 'required|exists:academic_years,id',
-                'grade_id'=> 'required|exists:grades,id',
+                'academic_class_id'=> 'required|exists:academic_class,id',
                 'teacher_id' => 'required|string'
             ], [
                 'name.unique' => 'This class already exists for the selected academic year.'
@@ -131,6 +131,26 @@ class SectionController extends Controller
             return response()->json(['message' => 'Class deleted successfully'], 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to delete the class');
+        }
+    }
+
+    public function assignTeacher(Request $request)
+    {
+        try {
+
+            $validated = $request->validate([
+                'id' => 'required|exists:sections,id',
+                'teacher.label' => 'required|string',
+                'teacher.value' => 'required|string',
+            ]);
+
+            $section = Section::findOrFail($validated['id']);
+            $section->teacher_id = $validated['teacher']['value'];
+            $section->save();
+
+            return response()->json($section, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to update the class');
         }
     }
 }
