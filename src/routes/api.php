@@ -12,6 +12,7 @@ use App\Http\Controllers\APIs\CertificateController;
 use App\Http\Controllers\APIs\AcademicYearController;
 use App\Http\Controllers\APIs\AcademicClassController;
 use App\Http\Controllers\APIs\AcademicClassSubjectController;
+use App\Http\Controllers\APIs\SectionSubjectController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -22,6 +23,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
     Route::apiResource('classes', AcademicClassController::class);
     Route::apiResource('grades', GradeController::class);
     Route::apiResource('subjects', SubjectController::class);
+    Route::apiResource('section-subjects', SectionSubjectController::class);
     Route::apiResource('sections', SectionController::class);
     Route::apiResource('academic_class_subjects',AcademicClassSubjectController::class);
     Route::apiResource('time-tables', TimeTableController::class);

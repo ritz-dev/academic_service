@@ -4,7 +4,6 @@ namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Models\AcademicClass;
-use App\Models\AcademicClassSubject;
 use App\Models\Section;
 use Exception;
 use Illuminate\Http\Request;
@@ -32,7 +31,7 @@ class AcademicClassController extends Controller
             $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'academic_classes.created_at';
             $sortedBy = in_array($sortedBy, $validSortDirections) ? $sortedBy : 'desc';
 
-            $dataArray = AcademicClass::with('sections','subjects')->selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
+            $dataArray = AcademicClass::with('sections')->selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
                                 academic_classes.id as id,
                                 academic_classes.name as name
                             ')
@@ -96,14 +95,6 @@ class AcademicClassController extends Controller
                 'id' => Str::uuid(),
                 'name' => $request->input('name')
             ]);
-
-            foreach($validated['subjects'] as $subject) {
-                AcademicClassSubject::create([
-                    'id' => Str::uuid(),
-                    'academic_class_id' => $class->id,
-                    'subject_id' => $subject['id']
-                ]);
-            }
 
             foreach($validated['section'] as $section) {
                 Section::create([

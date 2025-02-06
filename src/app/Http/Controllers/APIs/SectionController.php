@@ -17,24 +17,60 @@ class SectionController extends Controller
     {
         try {
             $token = $request->header('Authorization');
+            $select = $request->input('select', null);
+            $limit = $request->input('limit', 15);
+            $page = $request->input('page', 1);
+            $orderBy = $request->input('orderBy', 'sections.created_at');
+            $sortedBy = $request->input('sortedBy', 'desc');
+            $search = $request->input('search', '');
+            $offset = ($page - 1) * $limit;
 
-            $sections = Section::all();
+            $validOrderColumns = ['sections.created_at', 'sections.updated_at'];
+            $validSortDirections = ['asc', 'desc'];
 
-            foreach ($sections as $section) {
+            $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'sections.created_at';
+            $sortedBy = in_array($sortedBy, $validSortDirections) ? $sortedBy : 'desc';
+
+            $dataArray = Section::where('academic_class_id',$select)->selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
+                                sections.id as id,
+                                sections.name as name
+                            ')
+                            ->when($search, function ($query, $search) {
+                                $query->where(function ($query) use ($search) {
+                                    $query->where('sections.name', 'like', "%{$search}%");
+                                });
+                            });
+
+            $total = $dataArray->get()->count();
+
+            $data = $dataArray
+                ->orderBy($orderBy, $sortedBy)
+                ->skip($offset)
+                ->take($limit)
+                ->get();
+
+            foreach ($data as $section) {
                 $teacherInfo = $this->fetchTeacherInfo($token, $section->teacher_id);
-               
+                
                 $section->teacher = $teacherInfo;
             }
-            return response()->json($sections, 200);
 
+            return response()->json([
+                "message" => "success",
+                "total" => $total,
+                "data" => $data
+            ]);
         } catch (Exception $e) {
-            return $this->handleException($e, 'Failed to fetch sections');
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],500);
         }
     }
 
     private function fetchTeacherInfo($token, $teacherId)
     { 
-        $userManagementServiceUrl = config('services.user_management.url') . '/teachers' . '/f1368b92-579e-4bfd-aded-9d5f30f058aa';
+        $userManagementServiceUrl = config('services.user_management.url') . '/teachers' . '/846961ed-7776-4204-b802-63c6775b12b6';
         
         try { 
             $response = Http::withHeaders([ 
