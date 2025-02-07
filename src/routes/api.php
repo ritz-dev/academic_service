@@ -29,7 +29,8 @@ Route::group(['middleware' => ['auth.jwt']], function () {
     Route::apiResource('time-tables', TimeTableController::class);
     Route::apiResource('exams',ExamController::class);
     Route::get('attendances', [AttendanceController::class, 'index']);
-    Route::post('attendances', [AttendanceController::class, 'recordAttendance']);  
+    Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
     Route::post('certificates', [CertificateController::class, 'addCertificate']);
     Route::post('sections/assign-teacher',[SectionController::class, 'assignTeacher']);
+    Route::post('section-subjects-data', [SectionSubjectController::class,'index']);
 });
