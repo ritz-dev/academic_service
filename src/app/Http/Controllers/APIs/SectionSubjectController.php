@@ -72,6 +72,7 @@ class SectionSubjectController extends Controller
     public function getSubjectData(Request $request)
     {
         try {
+
             $section_Id = $request->input('section_Id');
 
             $data = SectionSubject::where('section_id', $section_Id)
@@ -91,10 +92,12 @@ class SectionSubjectController extends Controller
     public function getSectionData(Request $request)
     {
         try {
+
+
             $class_Id = $request->input('class_Id');
 
             $data = Section::where('academic_class_id', $class_Id)
-                        ->select('sections.name')
+                        ->select('sections.id,sections.name')
                         ->get();
 
             return response()->json($data);
