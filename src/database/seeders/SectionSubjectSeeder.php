@@ -23,19 +23,23 @@ class SectionSubjectSeeder extends Seeder
 
         $subject_id3 = Subject::where('name','Math')->pluck('id')->first();
 
-        for($sections as $section) {
-            SectionSubject::create([
+        $dataToInsert = [];
+
+        foreach ($sections as $section) {
+            $dataToInsert[] = [
                 'section_id' => $section->id,
                 'subject_id' => $subject_id1,
-            ]);
-            SectionSubject::create([
+            ];
+            $dataToInsert[] = [
                 'section_id' => $section->id,
                 'subject_id' => $subject_id2,
-            ]);
-            SectionSubject::create([
+            ];
+            $dataToInsert[] = [
                 'section_id' => $section->id,
                 'subject_id' => $subject_id3,
-            ]);
+            ];
         }
+
+        SectionSubject::insert($dataToInsert);
     }
 }

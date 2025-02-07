@@ -29,12 +29,23 @@ class SectionSubjectController extends Controller
             $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'subjects.created_at';
             $sortedBy = in_array($sortedBy, $validSortDirections) ? $sortedBy : 'desc';
 
-            $dataArray = Subject::select('subjects.id', 'subjects.name', 'subjects.description', 'subjects.code')
-                        ->join('sections_subjects', 'sections_subjects.subject_id', '=', 'subjects.id')
-                        ->where('sections_subjects.section_id', $select)
+            // $dataArray = Subject::select('subjects.id', 'subjects.name', 'subjects.description', 'subjects.code')
+            //             ->join('sections_subjects', 'sections_subjects.subject_id', '=', 'subjects.id')
+            //             ->where('sections_subjects.section_id', $select)
+            //             ->when($search, function ($query, $search) {
+            //                 $query->where('subjects.name', 'like', "%{$search}%");
+            //             });
+            $dataArray = SectionSubject::where('section_id', $select)
+                        ->join('subjects', 'subjects.id', '=', 'sections_subjects.subject_id')
+                        ->selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
+                            subjects.id as id,
+                            subjects.name as name,
+                            subjects.description as description,
+                            subjects.code as code')
                         ->when($search, function ($query, $search) {
                             $query->where('subjects.name', 'like', "%{$search}%");
                         });
+
 
             $total = $dataArray->get()->count();
 

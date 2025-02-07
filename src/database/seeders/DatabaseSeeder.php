@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
         ExamSeeder::class,
         ExamScheduleSeeder::class,
         ExamTeacherAssignmentSeeder::class,
-        ExamStudentAssignmentSeeder::class
+        ExamStudentAssignmentSeeder::class,
+        SectionSubjectSeeder::class,
        ]);
     }
 }

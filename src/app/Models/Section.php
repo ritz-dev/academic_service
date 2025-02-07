@@ -22,9 +22,4 @@ class Section extends Model
     {
         return $this->belongsTo(AcademicClass::class);
     }
-
-    public function subjects()
-    {
-        return $this->belongsToMany(Subject::class, 'section_subjects');
-    }
 }

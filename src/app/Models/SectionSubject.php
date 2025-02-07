@@ -9,7 +9,7 @@ class SectionSubject extends Model
 {
     use SoftDeletes;
 
-    protected $table = "section_subjects";
+    protected $table = "sections_subjects";
 
     protected $fillable = [
         "section_id",
