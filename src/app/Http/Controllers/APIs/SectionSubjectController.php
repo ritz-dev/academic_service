@@ -97,7 +97,7 @@ class SectionSubjectController extends Controller
             $class_Id = $request->input('class_Id');
 
             $data = Section::where('academic_class_id', $class_Id)
-                        ->select('sections.id,sections.name')
+                        ->select(['id','name'])
                         ->get();
 
             return response()->json($data);
