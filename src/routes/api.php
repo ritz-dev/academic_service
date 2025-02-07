@@ -32,5 +32,7 @@ Route::group(['middleware' => ['auth.jwt']], function () {
     Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
     Route::post('certificates', [CertificateController::class, 'addCertificate']);
     Route::post('sections/assign-teacher',[SectionController::class, 'assignTeacher']);
-    Route::post('get-subject-data', [SectionSubjectController::class,'getSubjectData']);
+    // Route::post('get-subject-data', [SectionSubjectController::class,'getSubjectData']);
 });
+
+Route::get('get-subject-data', [SectionSubjectController::class,'getSubjectData']);

@@ -71,51 +71,14 @@ class SectionSubjectController extends Controller
     public function getSubjectData(Request $request)
     {
         try {
-            $section_id = $request->input('section_id', null);
-            $limit = $request->input('limit', 15);
-            $page = $request->input('page', 1);
-            $orderBy = $request->input('orderBy', 'subjects.created_at');
-            // $sortedBy = $request->input('sortedBy', 'desc');
-            $search = $request->input('search', '');
-            $offset = ($page - 1) * $limit;
+            $section_Id = $request->input('section_Id');
 
-            $validOrderColumns = ['subjects.created_at', 'subjects.updated_at'];
-            // $validSortDirections = ['asc', 'desc'];
-
-            $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'subjects.created_at';
-            // $sortedBy = in_array($sortedBy, $validSortDirections) ? $sortedBy : 'desc';
-
-            // $dataArray = Subject::select('subjects.id', 'subjects.name', 'subjects.description', 'subjects.code')
-            //             ->join('sections_subjects', 'sections_subjects.subject_id', '=', 'subjects.id')
-            //             ->where('sections_subjects.section_id', $select)
-            //             ->when($search, function ($query, $search) {
-            //                 $query->where('subjects.name', 'like', "%{$search}%");
-            //             });
-            $dataArray = SectionSubject::where('section_id', $section_id)
+            $data = SectionSubject::where('section_id', $section_Id)
                         ->join('subjects', 'subjects.id', '=', 'sections_subjects.subject_id')
-                        ->selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.') as number,
-                            subjects.id as id,
-                            subjects.name as name,
-                            subjects.description as description,
-                            subjects.code as code')
-                        ->when($search, function ($query, $search) {
-                            $query->where('subjects.name', 'like', "%{$search}%");
-                        });
+                        ->select('subjects.name','subjects.description','subjects.code')
+                        ->get();
 
-
-            $total = $dataArray->get()->count();
-
-            $data = $dataArray
-                ->orderBy($orderBy)
-                ->skip($offset)
-                ->take($limit)
-                ->get();
-
-            return response()->json([
-                "message" => "success",
-                "total" => $total,
-                "data" => $data
-            ]);
+            return response()->json($data);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
