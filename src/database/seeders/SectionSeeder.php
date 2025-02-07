@@ -40,5 +40,12 @@ class SectionSeeder extends Seeder
             'teacher_id' => 2,
             'academic_year_id' => 1,
         ]);
+
+        Section::create([
+            'name' => 'C',
+            'academic_class_id' => 2,
+            'teacher_id' => 2,
+            'academic_year_id' => 1,
+        ]);
     }
 }
