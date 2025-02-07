@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\APIs;
 
-use App\Http\Controllers\Controller;
-use App\Models\SectionSubject;
+use App\Models\Section;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use App\Models\SectionSubject;
+use App\Http\Controllers\Controller;
 
 class SectionSubjectController extends Controller
 {
@@ -76,6 +77,24 @@ class SectionSubjectController extends Controller
             $data = SectionSubject::where('section_id', $section_Id)
                         ->join('subjects', 'subjects.id', '=', 'sections_subjects.subject_id')
                         ->select('subjects.name','subjects.description','subjects.code')
+                        ->get();
+
+            return response()->json($data);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],500);
+        }
+    }
+
+    public function getSectionData(Request $request)
+    {
+        try {
+            $class_Id = $request->input('class_Id');
+
+            $data = Section::where('academic_class_id', $class_Id)
+                        ->select('sections.name')
                         ->get();
 
             return response()->json($data);
