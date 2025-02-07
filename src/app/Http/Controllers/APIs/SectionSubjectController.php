@@ -68,7 +68,7 @@ class SectionSubjectController extends Controller
         }
     }
 
-    public function sectionSubjectData(Request $request)
+    public function getSubjectData(Request $request)
     {
         try {
             $section_id = $request->input('section_id', null);
