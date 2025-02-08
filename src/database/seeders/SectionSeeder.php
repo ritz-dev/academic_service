@@ -17,35 +17,35 @@ class SectionSeeder extends Seeder
             'name' => 'A',
             'academic_class_id' => 1,
             'teacher_id' => 1,
-            'academic_year_id' => 1,
+            // 'academic_year_id' => 1,
         ]);
 
         Section::create([
             'name' => 'B',
             'academic_class_id' => 1,
             'teacher_id' => 2,
-            'academic_year_id' => 1,
+            // 'academic_year_id' => 1,
         ]);
 
         Section::create([
             'name' => 'A',
             'academic_class_id' => 2,
             'teacher_id' => 1,
-            'academic_year_id' => 1,
+            // 'academic_year_id' => 1,
         ]);
 
         Section::create([
             'name' => 'B',
             'academic_class_id' => 2,
             'teacher_id' => 2,
-            'academic_year_id' => 1,
+            // 'academic_year_id' => 1,
         ]);
 
         Section::create([
             'name' => 'C',
             'academic_class_id' => 2,
             'teacher_id' => 2,
-            'academic_year_id' => 1,
+            // 'academic_year_id' => 1,
         ]);
     }
 }

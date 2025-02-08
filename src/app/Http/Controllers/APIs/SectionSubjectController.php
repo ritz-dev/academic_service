@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APIs;
 use App\Models\Section;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use App\Models\AcademicClass;
 use App\Models\SectionSubject;
 use App\Http\Controllers\Controller;
 
@@ -69,11 +70,38 @@ class SectionSubjectController extends Controller
         }
     }
 
+    public function getClassData(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'academic_year_Id' => 'required|exists:academic_years,id',
+            ]);
+
+            $academic_year_Id = $validated['academic_year_Id'];
+
+            $data = AcademicClass::where('academic_year_id', $academic_year_Id)
+                        ->select(['id','name'])
+                        ->get();
+
+            return response()->json($data);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],500);
+        }
+    }
+
     public function getSubjectData(Request $request)
     {
         try {
 
-            $section_Id = $request->input('section_Id');
+            $request->validate([
+                'section_Id' => 'required|exists:section_subjects,id',
+            ]);
+
+            $section_Id = $validated['section_Id'];
 
             $data = SectionSubject::where('section_id', $section_Id)
                         ->join('subjects', 'subjects.id', '=', 'sections_subjects.subject_id')
@@ -93,8 +121,11 @@ class SectionSubjectController extends Controller
     {
         try {
 
+            $request->validate([
+                'class_Id' => 'required|exists:section_subjects,id',
+            ]);
 
-            $class_Id = $request->input('class_Id');
+            $class_Id = $validated['class_Id'];
 
             $data = Section::where('academic_class_id', $class_Id)
                         ->select(['id','name'])

@@ -14,11 +14,13 @@ class AcademicClassSeeder extends Seeder
     public function run(): void
     {
         AcademicClass::create([
-            'name' => 'primary 1'
+            'name' => 'primary 1',
+            'academic_year_id' => 1,
         ]);
 
         AcademicClass::create([
-            'name' => 'primary 2'
+            'name' => 'primary 2',
+            'academic_year_id' => 1,
         ]);
     }
 }

@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('academic_classes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
+            $table->index(['academic_year_id']);
         });
     }
 

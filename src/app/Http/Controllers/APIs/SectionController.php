@@ -51,7 +51,7 @@ class SectionController extends Controller
 
             foreach ($data as $section) {
                 $teacherInfo = $this->fetchTeacherInfo($token, $section->teacher_id);
-                
+
                 $section->teacher = $teacherInfo;
             }
 
@@ -69,25 +69,25 @@ class SectionController extends Controller
     }
 
     private function fetchTeacherInfo($token, $teacherId)
-    { 
+    {
         $userManagementServiceUrl = config('services.user_management.url') . '/teachers' . '/846961ed-7776-4204-b802-63c6775b12b6';
-        
-        try { 
-            $response = Http::withHeaders([ 
-                'Accept' => 'application/json', 
-                'Authorization' => $token,  
+
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => $token,
             ])->get($userManagementServiceUrl);
 
             return json_decode($response->getBody()->getContents(), true);
 
             if ($response->failed()) {
-                return ['error' => 'Unable to fetch teacher info']; 
-            } 
-            
-            return $response->json(); 
-        } catch (\Exception $e) { 
-            return ['error' => 'Service unavailable', 'details' => $e->getMessage()]; 
-        } 
+                return ['error' => 'Unable to fetch teacher info'];
+            }
+
+            return $response->json();
+        } catch (\Exception $e) {
+            return ['error' => 'Service unavailable', 'details' => $e->getMessage()];
+        }
     }
 
     /**
@@ -98,7 +98,6 @@ class SectionController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'academic_year_id' => 'required|exists:academic_years,id',
                 'grade_id'=> 'required|exists:grades,id',
                 'teacher_id' => 'required|string'
             ], [
@@ -139,7 +138,6 @@ class SectionController extends Controller
 
             $request->validate([
                 'name' => 'required|string|max:255',
-                'academic_year_id' => 'required|exists:academic_years,id',
                 'academic_class_id'=> 'required|exists:academic_class,id',
                 'teacher_id' => 'required|string'
             ], [
