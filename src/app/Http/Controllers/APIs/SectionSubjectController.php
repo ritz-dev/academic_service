@@ -73,24 +73,22 @@ class SectionSubjectController extends Controller
     public function getClassData(Request $request)
     {
         try {
-
             $request->validate([
                 'academic_year_Id' => 'required|exists:academic_years,id',
             ]);
-
-            $academic_year_Id = $validated['academic_year_Id'];
-
-            $data = AcademicClass::where('academic_year_id', $academic_year_Id)
-                        ->select(['id','name'])
+        
+            $data = AcademicClass::where('academic_year_id', $request->input('academic_year_Id'))
+                        ->select(['id', 'name'])
                         ->get();
-
+        
             return response()->json($data);
+
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ],500);
-        }
+            ], 500);
+        }        
     }
 
     public function getSubjectData(Request $request)
@@ -98,12 +96,10 @@ class SectionSubjectController extends Controller
         try {
 
             $request->validate([
-                'section_Id' => 'required|exists:section_subjects,id',
+                'section_Id' => 'required|exists:sections_subjects,id',
             ]);
 
-            $section_Id = $validated['section_Id'];
-
-            $data = SectionSubject::where('section_id', $section_Id)
+            $data = SectionSubject::where('section_id', $request->input('section_Id'))
                         ->join('subjects', 'subjects.id', '=', 'sections_subjects.subject_id')
                         ->select('subjects.name','subjects.description','subjects.code')
                         ->get();
@@ -122,12 +118,10 @@ class SectionSubjectController extends Controller
         try {
 
             $request->validate([
-                'class_Id' => 'required|exists:section_subjects,id',
+                'class_Id' => 'required|exists:sections_subjects,id',
             ]);
 
-            $class_Id = $validated['class_Id'];
-
-            $data = Section::where('academic_class_id', $class_Id)
+            $data = Section::where('academic_class_id',$request->input('class_Id'))
                         ->select(['id','name'])
                         ->get();
 

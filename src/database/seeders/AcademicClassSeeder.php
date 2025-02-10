@@ -22,5 +22,15 @@ class AcademicClassSeeder extends Seeder
             'name' => 'primary 2',
             'academic_year_id' => 1,
         ]);
+
+        AcademicClass::create([
+            'name' => 'primary 1',
+            'academic_year_id' => 2,
+        ]);
+
+        AcademicClass::create([
+            'name' => 'primary 2',
+            'academic_year_id' => 2,
+        ]);
     }
 }
