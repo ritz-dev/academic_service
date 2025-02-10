@@ -21,6 +21,11 @@ class AttendanceController extends Controller
 
     public function index()
     {
+
+    }
+
+    public function getAttendance()
+    {
         try {
             $attendance =  Attendance::with(['timetable'])->get();
             return response()->json(AttendanceResource::collection($attendance), 200);
@@ -40,7 +45,7 @@ class AttendanceController extends Controller
                 'date' => 'required|date',
                 'remarks' => 'nullable|string',
             ]);
-        
+
             $previousHash = $this->blockchainService->getPreviousHash(Attendance::class);
             $timestamp = now();
             $calculatedHash = $this->blockchainService->calculateHash(
@@ -54,7 +59,7 @@ class AttendanceController extends Controller
             $attendanceData['hash'] = $calculatedHash;
 
             $attendance = Attendance::create($attendanceData);
-        
+
             return response()->json($attendance,200);
         }catch (Exception $e) {
             return $this->handleException($e, 'Failed to create attendance');

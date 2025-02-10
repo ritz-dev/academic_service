@@ -18,8 +18,13 @@ class ExamScheduleController extends Controller
      */
     public function index()
     {
+
+    }
+
+    public function getExamSchedule()
+    {
         try {
-            $examSchedules = ExamSchedule::with(['teachers', 'students'])->get();
+            $examSchedules = ExamSchedule::get();
             return response()->json($examSchedules, 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to retrieve exam schedules');

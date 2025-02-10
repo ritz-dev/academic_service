@@ -15,6 +15,11 @@ class TimeTableController extends Controller
      */
     public function index()
     {
+
+    }
+
+    public function getTimeTable()
+    {
         try {
             $timetables = TimeTable::with(['class','subject'])->get();
             return response()->json(TimeTableResource::collection($timetables), 200);

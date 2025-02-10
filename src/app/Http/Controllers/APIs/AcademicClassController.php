@@ -17,6 +17,11 @@ class AcademicClassController extends Controller
      */
     public function index(Request $request)
     {
+
+    }
+
+    public function getAcademicClass(Request $request)
+    {
         try {
             $limit = $request->input('limit', 15);
             $page = $request->input('page', 1);
@@ -75,7 +80,7 @@ class AcademicClassController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'academicYear' => 'required|string|max:255',

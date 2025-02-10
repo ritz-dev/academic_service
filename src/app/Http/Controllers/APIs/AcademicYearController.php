@@ -18,6 +18,11 @@ class AcademicYearController extends Controller
      */
     public function index(Request $request)
     {
+
+    }
+
+    public function getAcademicYear(Request $request)
+    {
         try {
             $limit = $request->input('limit', 15);
             $page = $request->input('page', 1);
@@ -72,7 +77,7 @@ class AcademicYearController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**

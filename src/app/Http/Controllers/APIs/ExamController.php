@@ -14,6 +14,11 @@ class ExamController extends Controller
      */
     public function index()
     {
+
+    }
+
+    public function getExam()
+    {
         try {
             $exams = Exam::all();
             return response()->json($exams, 200);

@@ -15,6 +15,10 @@ class SectionController extends Controller
      */
     public function index(Request $request)
     {
+
+    }
+
+    public function getSection(Request $request){
         try {
             $token = $request->header('Authorization');
             $select = $request->input('select', null);

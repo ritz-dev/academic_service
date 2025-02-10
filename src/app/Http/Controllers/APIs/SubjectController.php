@@ -14,6 +14,10 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
+
+    }
+
+    public function getSubject(Request $request){
         try {
             $limit = $request->input('limit', 15);
             $page = $request->input('page', 1);
@@ -102,7 +106,7 @@ class SubjectController extends Controller
     {
         //
     }
-    
+
     /**
      * Update the specified resource in storage.
      */

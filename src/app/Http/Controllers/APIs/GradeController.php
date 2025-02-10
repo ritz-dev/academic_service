@@ -18,6 +18,10 @@ class GradeController extends Controller
 
     public function index()
     {
+
+    }
+
+    public function getGrade(){
         try {
             $gradeAll = Grade::All();
             return response()->json($gradeAll);

@@ -74,13 +74,13 @@ class SectionSubjectController extends Controller
     {
         try {
             $request->validate([
-                'academic_year_Id' => 'required|exists:academic_years,id',
+                'academic_year_Id' => 'required',
             ]);
-        
+
             $data = AcademicClass::where('academic_year_id', $request->input('academic_year_Id'))
                         ->select(['id', 'name'])
                         ->get();
-        
+
             return response()->json($data);
 
         } catch (Exception $e) {
@@ -88,7 +88,7 @@ class SectionSubjectController extends Controller
                 'success' => false,
                 'message' => $e->getMessage()
             ], 500);
-        }        
+        }
     }
 
     public function getSubjectData(Request $request)
@@ -96,7 +96,7 @@ class SectionSubjectController extends Controller
         try {
 
             $request->validate([
-                'section_Id' => 'required|exists:sections_subjects,id',
+                'section_Id' => 'required',
             ]);
 
             $data = SectionSubject::where('section_id', $request->input('section_Id'))
@@ -118,7 +118,7 @@ class SectionSubjectController extends Controller
         try {
 
             $request->validate([
-                'class_Id' => 'required|exists:sections_subjects,id',
+                'class_Id' => 'required',
             ]);
 
             $data = Section::where('academic_class_id',$request->input('class_Id'))
