@@ -119,6 +119,7 @@ class SubjectController extends Controller
                 'name' => 'required|string',
                 'code' => 'required|string|unique:subjects,code',
                 'description' => 'nullable|string',
+                'academic_class_id' => "required|exists:academic_classes,id"
             ]);
 
             $subject = Subject::create($request->all());

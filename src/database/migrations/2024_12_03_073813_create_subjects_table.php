@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('description')->nullable();
+            $table->foreignId('academic_class_id')->constrianed('academic_classes')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
