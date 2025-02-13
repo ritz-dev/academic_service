@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\SectionSubject;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class SubjectController extends Controller
@@ -116,6 +117,8 @@ class SubjectController extends Controller
 
     public function createSubject(Request $request){
         try {
+            DB::beginTransaction();
+
             $request->validate([
                 'name' => 'required|string',
                 'code' => 'required|string|unique:subjects,code',
@@ -128,17 +131,43 @@ class SubjectController extends Controller
 
             $section_subject = SectionSubject::create([
                 "section_id" => $request->section_id,
-                "subject_id" => $subject->subject_id
+                "subject_id" => $subject->id
             ]);
 
+            DB::commit();
             return response()->json($subject, 200);
         } catch (Exception $e) {
+            DB::rollBack();
             return $this->handleException($e, 'Failed to create subject');
         }
     }
 
     public function addSubject(Request $request){
+        try {
 
+            $request->validate([
+                'section_id' => "required|exists:sections,id",
+                'subject_id' => "required|array",
+                'subject_id.*' => "exists:subjects,id",
+            ]);
+
+            $section_subjects = [];
+            foreach ($request->subject_id as $subjectId) {
+                $section_subjects[] = [
+                    "section_id" => $request->section_id,
+                    "subject_id" => $subjectId,
+                    "created_at" => now(),
+                    "updated_at" => now()
+                ];
+            }
+
+            $sec_sub = SectionSubject::insert($section_subjects);
+
+            return response()->json($sec_sub, 200);
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to create subject');
+        }
     }
 
     public function store(Request $request)

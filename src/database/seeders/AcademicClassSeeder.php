@@ -24,39 +24,16 @@ class AcademicClassSeeder extends Seeder
         ]);
 
         AcademicClass::create([
-            'name' => 'Primary 1',
-            'academic_year_id' => 2,
-        ]);
-
-        AcademicClass::create([
-            'name' => 'Primary 2',
-            'academic_year_id' => 2,
-        ]);
-
-        AcademicClass::create([
-            'name' => 'Primary 3',
-            'academic_year_id' => 1,
-        ]);
-
-        AcademicClass::create([
             'name' => 'Primary 3',
             'academic_year_id' => 1,
         ]);
 
         AcademicClass::create([
             'name' => 'Primary 4',
-            'academic_year_id' => 2,
-        ]);
-
-        AcademicClass::create([
-            'name' => 'Primary 4',
-            'academic_year_id' => 2,
-        ]);
-
-        AcademicClass::create([
-            'name' => 'Primary 5',
             'academic_year_id' => 1,
         ]);
+
+
 
         AcademicClass::create([
             'name' => 'Primary 5',
@@ -65,18 +42,10 @@ class AcademicClassSeeder extends Seeder
 
         AcademicClass::create([
             'name' => 'Primary 6',
-            'academic_year_id' => 2,
-        ]);
-
-        AcademicClass::create([
-            'name' => 'Primary 6',
-            'academic_year_id' => 2,
-        ]);
-
-        AcademicClass::create([
-            'name' => 'Primary 7',
             'academic_year_id' => 1,
         ]);
+
+
 
         AcademicClass::create([
             'name' => 'Primary 7',
@@ -85,32 +54,20 @@ class AcademicClassSeeder extends Seeder
 
         AcademicClass::create([
             'name' => 'Primary 8',
-            'academic_year_id' => 2,
+            'academic_year_id' => 1,
         ]);
 
-        AcademicClass::create([
-            'name' => 'Primary 8',
-            'academic_year_id' => 2,
-        ]);
 
         AcademicClass::create([
             'name' => 'Primary 9',
             'academic_year_id' => 1,
         ]);
 
+
         AcademicClass::create([
-            'name' => 'Primary 9',
+            'name' => 'Primary 10',
             'academic_year_id' => 1,
         ]);
 
-        AcademicClass::create([
-            'name' => 'Primary 10',
-            'academic_year_id' => 2,
-        ]);
-
-        AcademicClass::create([
-            'name' => 'Primary 10',
-            'academic_year_id' => 2,
-        ]);
     }
 }
