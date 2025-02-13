@@ -14,7 +14,51 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
+        try {
+            $limit = $request->input('limit', 15);
+            $page = $request->input('page', 1);
+            $orderBy = $request->input('orderBy', 'subjects.created_at');
+            $sortedBy = $request->input('sortedBy', 'desc');
+            $search = $request->input('search', '');
+            $offset = ($page - 1) * $limit;
 
+            $validOrderColumns = ['subjects.created_at', 'subjects.updated_at'];
+            $validSortDirections = ['asc', 'desc'];
+
+            $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'subjects.created_at';
+            $sortedBy = in_array($sortedBy, $validSortDirections) ? $sortedBy : 'desc';
+
+
+            $dataArray = Subject::selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
+                            id,
+                            name,
+                            description,
+                            code')
+                        ->when($search, function ($query, $search) {
+                            $query->where(function ($query) use ($search) {
+                                $query->where('name', 'like', "%{$search}%");
+                            });
+                        });
+
+            $total = $dataArray->get()->count();
+
+            $data = $dataArray
+                ->orderBy($orderBy, $sortedBy)
+                ->skip($offset)
+                ->take($limit)
+                ->get();
+
+            return response()->json([
+                "message" => "success",
+                "total" => $total,
+                "data" => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ],500);
+        }
     }
 
     public function getSubject(Request $request){
