@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\APIs;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Subject;
 use Illuminate\Http\Request;
-use Exception;
+use App\Models\SectionSubject;
+use App\Http\Controllers\Controller;
 
 class SubjectController extends Controller
 {
@@ -112,6 +113,34 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    public function createSubject(Request $request){
+        try {
+            $request->validate([
+                'name' => 'required|string',
+                'code' => 'required|string|unique:subjects,code',
+                'description' => 'nullable|string',
+                'academic_class_id' => "required|exists:academic_classes,id",
+                'section_id' => "required|exists:sections,id"
+            ]);
+
+            $subject = Subject::create($request->all());
+
+            $section_subject = SectionSubject::create([
+                "section_id" => $request->section_id,
+                "subject_id" => $subject->subject_id
+            ]);
+
+            return response()->json($subject, 200);
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to create subject');
+        }
+    }
+
+    public function addSubject(Request $request){
+
+    }
+
     public function store(Request $request)
     {
         try {

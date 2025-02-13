@@ -55,6 +55,45 @@ class SectionSubjectSeeder extends Seeder
                     'subject_id' => $subject_id5,
                 ];
             }
+
+            if ($index === 3) {
+
+                $dataToInsert[] = [
+                    'section_id' => $section->id,
+                    'subject_id' => $subject_id4,
+                ];
+
+                $dataToInsert[] = [
+                    'section_id' => $section->id,
+                    'subject_id' => $subject_id5,
+                ];
+            }
+
+            if ($index === 4) {
+
+                $dataToInsert[] = [
+                    'section_id' => $section->id,
+                    'subject_id' => $subject_id1,
+                ];
+
+                $dataToInsert[] = [
+                    'section_id' => $section->id,
+                    'subject_id' => $subject_id2,
+                ];
+            }
+
+            if ($index === 5) {
+
+                $dataToInsert[] = [
+                    'section_id' => $section->id,
+                    'subject_id' => $subject_id3,
+                ];
+
+                $dataToInsert[] = [
+                    'section_id' => $section->id,
+                    'subject_id' => $subject_id4,
+                ];
+            }
         }
 
         SectionSubject::insert($dataToInsert);

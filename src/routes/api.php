@@ -26,6 +26,7 @@ Route::apiResource('academic_class_subjects',AcademicClassSubjectController::cla
 Route::apiResource('time-tables', TimeTableController::class);
 Route::apiResource('exams',ExamController::class);
 Route::get('attendances', [AttendanceController::class, 'index']);
+Route::post('create-subject',[SubjectController::class,'createSubject']);
 Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
 Route::post('certificates', [CertificateController::class, 'addCertificate']);
 Route::post('sections/assign-teacher',[SectionController::class, 'assignTeacher']);
