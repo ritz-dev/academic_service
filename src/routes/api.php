@@ -32,6 +32,7 @@ Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
 Route::post('certificates', [CertificateController::class, 'addCertificate']);
 Route::post('sections/assign-teacher',[SectionController::class, 'assignTeacher']);
 Route::post('get-academic-class',[AcademicClassController::class,'getAcademicClass']);
+Route::post('show-class/{id}',[AcademicClassController::class,'showAcademicClass']);
 Route::post('get-academic-year',[AcademicYearController::class,'getAcademicYear']);
 Route::post('get-attendance',[AttendanceController::class,'getAttendance']);
 Route::post('get-exam',[ExamController::class,'getExam']);

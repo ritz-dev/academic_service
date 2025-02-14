@@ -76,9 +76,21 @@ class AcademicClassController extends Controller
     /**
      * Display the specified resource.
      */
+
+    public function showAcademicClass($id){
+        try {
+            $academic_class = AcademicClass::with('academicYear')->where('id',$id)->get();
+            return response()->json($academic_class, 200);
+        } catch (Exception $e) {
+
+            return $this->handleException($e, 'Failed to fetch the class');
+        }
+    }
+
     public function show(string $id)
     {
-        //
+        $academic_class = AcademicClass::findOrFail($id);
+        return response()->json($academic_class);
     }
 
     /**
