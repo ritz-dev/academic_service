@@ -14,11 +14,6 @@ class AcademicClass extends Model
 
     protected $hidden = ["created_at","updated_at","deleted_at"];
 
-    public function sections()
-    {
-        return $this->hasMany(Section::class);
-    }
-
     public function academicYear(){
         return $this->belongsTo(AcademicYear::class,'id','academic_year_id');
     }

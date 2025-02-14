@@ -22,21 +22,16 @@ class AcademicClassController extends Controller
 
     public function getAcademicClass(Request $request)
     {
-        $request->validate([
-            'academic_year_Id' => 'required',
-        ]);
-
         try {
+            $data = AcademicClass::with('academicYear')->get();
 
-            $dataArray = AcademicClass::where('academic_year_Id',);
-            $data = $dataArray->get();
+            return response()->json($data);
 
-            return response()->json([$data]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ],500);
+            ], 500);
         }
     }
 
@@ -55,7 +50,7 @@ class AcademicClassController extends Controller
     {
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:academic_classes,name',
             'academicYear' => 'required|string|max:255',
         ], [
             'name.unique' => 'This class already exists for the selected academic year'
