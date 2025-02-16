@@ -7,6 +7,8 @@ use App\Models\Section;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+
 
 class SectionController extends Controller
 {
@@ -18,52 +20,19 @@ class SectionController extends Controller
 
     }
 
-    public function getSection(Request $request){
+    public function getSectionData(Request $request)
+    {
         try {
-            $token = $request->header('Authorization');
-            $select = $request->input('select', null);
-            $limit = $request->input('limit', 15);
-            $page = $request->input('page', 1);
-            $orderBy = $request->input('orderBy', 'sections.created_at');
-            $sortedBy = $request->input('sortedBy', 'desc');
-            $search = $request->input('search', '');
-            $offset = ($page - 1) * $limit;
 
-            $validOrderColumns = ['sections.created_at', 'sections.updated_at'];
-            $validSortDirections = ['asc', 'desc'];
-
-            $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'sections.created_at';
-            $sortedBy = in_array($sortedBy, $validSortDirections) ? $sortedBy : 'desc';
-
-            $dataArray = Section::where('academic_class_id',$select)->selectRaw('ROW_NUMBER() OVER(ORDER BY '.$orderBy.' '.$sortedBy.') as number,
-                                sections.id as id,
-                                sections.name as name
-                            ')
-                            ->when($search, function ($query, $search) {
-                                $query->where(function ($query) use ($search) {
-                                    $query->where('sections.name', 'like', "%{$search}%");
-                                });
-                            });
-
-            $total = $dataArray->get()->count();
-
-            $data = $dataArray
-                ->orderBy($orderBy, $sortedBy)
-                ->skip($offset)
-                ->take($limit)
-                ->get();
-
-            foreach ($data as $section) {
-                $teacherInfo = $this->fetchTeacherInfo($token, $section->teacher_id);
-
-                $section->teacher = $teacherInfo;
-            }
-
-            return response()->json([
-                "message" => "success",
-                "total" => $total,
-                "data" => $data
+            $request->validate([
+                'class_Id' => 'required',
             ]);
+
+            $data = Section::where('academic_class_id',$request->input('class_Id'))
+                        ->select(['id','name'])
+                        ->get();
+
+            return response()->json($data);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
@@ -102,13 +71,18 @@ class SectionController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'grade_id'=> 'required|exists:grades,id',
-                'teacher_id' => 'required|string'
+                'academicClassId'=> 'required',
             ], [
                 'name.unique' => 'This section already exists for the selected class.'
             ]);
 
-            $section = Section::create($request->all());
+            logger($request);
+
+            $section = Section::create([
+                'id' => Str::uuid(),
+                'name' => $request->input('name'),
+                'academic_class_id' => $request->input('academicClassId'),
+            ]);
 
             return response()->json($section, 200);
 

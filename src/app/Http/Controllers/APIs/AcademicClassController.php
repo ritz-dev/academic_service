@@ -35,6 +35,27 @@ class AcademicClassController extends Controller
         }
     }
 
+    public function getClassData(Request $request)
+    {
+        try {
+            $request->validate([
+                'academic_year_Id' => 'required',
+            ]);
+
+            $data = AcademicClass::where('academic_year_id', $request->input('academic_year_Id'))
+                        ->select(['id', 'name'])
+                        ->get();
+
+            return response()->json($data);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -63,11 +84,8 @@ class AcademicClassController extends Controller
                 'academic_year_id' => $request->input('academicYear')
             ]);
 
-            $data = AcademicClass::where('academic_year_id', $request->input('academicYear'))
-                ->select(['id', 'name'])
-                ->get();
+            return response()->json($class, 200);
 
-            return response()->json([$data]);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to create section');
         }

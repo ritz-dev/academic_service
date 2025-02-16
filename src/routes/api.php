@@ -41,8 +41,6 @@ Route::post('get-grade',[GradeController::class,'getGrade']);
 Route::post('get-section',[SectionController::class,'getSection']);
 Route::post('get-subject',[SubjectController::class,'getSubject']);
 Route::post('get-time-table',[TimeTableController::class,'getTimeTable']);
-Route::post('get-class-data', [SectionSubjectController::class,'getClassData']);
-Route::post('get-subject-data', [SectionSubjectController::class,'getSubjectData']);
-Route::post('get-section-data', [SectionSubjectController::class,'getSectionData']);
-
-
+Route::post('get-class-data', [AcademicClassController::class,'getClassData']);
+Route::post('get-subject-data', [SubjectController::class,'getSubjectData']);
+Route::post('get-section-data', [SectionController::class,'getSectionData']);
