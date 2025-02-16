@@ -9,6 +9,7 @@ use App\Models\SectionSubject;
 use App\Models\Section;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class SubjectController extends Controller
 {
@@ -120,32 +121,6 @@ class SubjectController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function createSubject(Request $request){
-        try {
-            DB::beginTransaction();
-
-            $request->validate([
-                'name' => 'required|string',
-                'code' => 'required|string|unique:subjects,code',
-                'description' => 'nullable|string',
-                'academic_class_id' => "required|exists:academic_classes,id",
-                'section_id' => "required|exists:sections,id"
-            ]);
-
-            $subject = Subject::create($request->all());
-
-            $section_subject = SectionSubject::create([
-                "section_id" => $request->section_id,
-                "subject_id" => $subject->id
-            ]);
-
-            DB::commit();
-            return response()->json($subject, 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return $this->handleException($e, 'Failed to create subject');
-        }
-    }
 
     public function addSubject(Request $request){
         try {
@@ -153,7 +128,6 @@ class SubjectController extends Controller
             $request->validate([
                 'sectionId' => "required|exists:sections,id",
                 'subjects' => "required|array",
-                'subject_id.*' => "exists:subjects,id",
             ]);
 
             $section_subjects = [];
@@ -178,17 +152,42 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction();
+
             $request->validate([
                 'name' => 'required|string',
                 'code' => 'required|string|unique:subjects,code',
                 'description' => 'nullable|string',
-                'academic_class_id' => "required|exists:academic_classes,id"
+                'sectionId' => "required|exists:sections,id"
             ]);
 
-            $subject = Subject::create($request->all());
+            $academicClassId = Section::where('id', $request->input('sectionId'))
+                                ->value('academic_class_id');
+        
+            if (!$academicClassId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid section ID'
+                ], 400);
+            }
 
+            $subject = Subject::create([
+                'id' => Str::uuid(),
+                'name' => $request->input('name'),
+                'code' => $request->input('code'),
+                'description' => $request->input('deescription'),
+                'academic_class_id' => $academicClassId,
+            ]);
+
+            $section_subject = SectionSubject::create([
+                "section_id" => $request->sectionId,
+                "subject_id" => $subject->id
+            ]);
+
+            DB::commit();
             return response()->json($subject, 200);
         } catch (Exception $e) {
+            DB::rollBack();
             return $this->handleException($e, 'Failed to create subject');
         }
     }

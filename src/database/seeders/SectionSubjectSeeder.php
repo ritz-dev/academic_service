@@ -22,11 +22,7 @@ class SectionSubjectSeeder extends Seeder
         $subject_id2 = Subject::where('name','Myanmar')->pluck('id')->first();
 
         $subject_id3 = Subject::where('name','Math')->pluck('id')->first();
-
-        $subject_id4 = Subject::where('name','Science')->pluck('id')->first();
-
-        $subject_id5 = Subject::where('name','Geography')->pluck('id')->first();
-
+        
         $dataToInsert = [];
 
         foreach ($sections as $index => $section) {
@@ -43,57 +39,7 @@ class SectionSubjectSeeder extends Seeder
                 'subject_id' => $subject_id3,
             ];
 
-            if ($index === 2) {
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id4,
-                ];
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id5,
-                ];
-            }
-
-            if ($index === 3) {
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id4,
-                ];
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id5,
-                ];
-            }
-
-            if ($index === 4) {
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id1,
-                ];
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id2,
-                ];
-            }
-
-            if ($index === 5) {
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id3,
-                ];
-
-                $dataToInsert[] = [
-                    'section_id' => $section->id,
-                    'subject_id' => $subject_id4,
-                ];
-            }
+            
         }
 
         SectionSubject::insert($dataToInsert);
