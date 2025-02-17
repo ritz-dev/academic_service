@@ -77,5 +77,57 @@ class TimeTableSeeder extends Seeder
             'end_time' => '01:00',
             'type' => 'Break-Time'
         ]);
+
+        TimeTable::create([
+            'academic_class_id' => 1,
+            'section_id' => 1,
+            'subject_id' => 1,
+            'teacher_id' => 1,
+            'room' => 'Room One',
+            'date' => '2025-02-21',
+            'day' => 'Friday',
+            'start_time' => '09:00',
+            'end_time' => '10:30',
+            'type' => 'Class'
+        ]);
+
+        TimeTable::create([
+            'academic_class_id' => 1,
+            'section_id' => 1,
+            'subject_id' => 1,
+            'teacher_id' => 1,
+            'room' => 'Room One',
+            'date' => '2025-02-21',
+            'day' => 'Friday',
+            'start_time' => '10:30',
+            'end_time' => '12:00',
+            'type' => 'Class'
+        ]);
+
+        TimeTable::create([
+            'academic_class_id' => 1,
+            'section_id' => 1,
+            'subject_id' => 1,
+            'teacher_id' => 1,
+            'room' => 'Room One',
+            'date' => '2025-02-21',
+            'day' => 'Friday',
+            'start_time' => '12:00',
+            'end_time' => '01:00',
+            'type' => 'Break-Time'
+        ]);
+
+        TimeTable::create([
+            'academic_class_id' => 1,
+            'section_id' => 1,
+            'subject_id' => 1,
+            'teacher_id' => 1,
+            'room' => 'Room One',
+            'date' => '2025-02-21',
+            'day' => 'Friday',
+            'start_time' => '01:00',
+            'end_time' => '12:30',
+            'type' => 'Class'
+        ]);
     }
 }
