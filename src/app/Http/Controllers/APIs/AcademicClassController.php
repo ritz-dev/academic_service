@@ -96,17 +96,9 @@ class AcademicClassController extends Controller
      * Display the specified resource.
      */
 
-    public function showAcademicClass($id){
-        try {
-            $academic_class = AcademicClass::with('academicYear')->where('id',$id)->get();
-            return response()->json($academic_class, 200);
-        } catch (Exception $e) {
 
-            return $this->handleException($e, 'Failed to fetch the class');
-        }
-    }
-
-    public function showClass(Request $request){
+    public function show(Request $request)
+    {
         try{
             $class_id = $request->slug;
             $academic_class = AcademicClass::where('id',$class_id)->select('id','name','academic_year_id as academicYear')->first();
@@ -116,12 +108,6 @@ class AcademicClassController extends Controller
         }catch (Exception $e){
             return $this->handleException($e, 'Failed to fetch the class');
         }
-    }
-
-    public function show(string $id)
-    {
-        $academic_class = AcademicClass::findOrFail($id);
-        return response()->json($academic_class);
     }
 
     /**
@@ -150,7 +136,7 @@ class AcademicClassController extends Controller
                 'name.unique' => 'This class already exists for the selected academic year'
             ]);
 
-            $class = AcademicClass::findOrFail($request->class_id);
+            $class = AcademicClass::findOrFail($request->id);
             $class->name = $request->name;
             $class->academic_year_id = $request->academicYear;
             $class->save();
