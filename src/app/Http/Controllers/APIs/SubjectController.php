@@ -199,7 +199,8 @@ class SubjectController extends Controller
     {
         try{
             $subject_id = $request->slug;
-            $subject = Subject::with('academicClass')->where('id',$subject_id)->first();
+            $subject = Subject::where('id',$subject_id)->select('name','code','description','academic_class_id as academicClassId')->first();
+            $subject->academicClassId = (string)$subject->academicClassId;
             return response()->json($subject, 200);
         }catch (Exception $e){
             return $this->handleException($e, 'Failed to fetch the subject');
