@@ -31,16 +31,20 @@ Route::post('add-subject',[SubjectController::class,'addSubject']);
 Route::post('attendances', [AttendanceController::class, 'recordAttendance']);
 Route::post('certificates', [CertificateController::class, 'addCertificate']);
 Route::post('sections/assign-teacher',[SectionController::class, 'assignTeacher']);
-Route::post('get-academic-class',[AcademicClassController::class,'getAcademicClass']);
+Route::post('get-academic-classes',[AcademicClassController::class,'getAcademicClass']);
 Route::post('show-class/{id}',[AcademicClassController::class,'showAcademicClass']);
 Route::post('get-academic-year',[AcademicYearController::class,'getAcademicYear']);
 Route::post('get-attendance',[AttendanceController::class,'getAttendance']);
 Route::post('get-exam',[ExamController::class,'getExam']);
 Route::post('get-exam-schedule',[ExamScheduleController::class,'getExamSchedule']);
 Route::post('get-grade',[GradeController::class,'getGrade']);
-Route::post('get-section',[SectionController::class,'getSection']);
-Route::post('get-subject',[SubjectController::class,'getSubject']);
+Route::post('get-sections',[SectionController::class,'getSection']);
+Route::post('get-subjects',[SubjectController::class,'getSubject']);
 Route::post('get-time-table',[TimeTableController::class,'getTimeTable']);
 Route::post('get-class-data', [AcademicClassController::class,'getClassData']);
 Route::post('get-subject-data', [SubjectController::class,'getSubjectData']);
 Route::post('get-section-data', [SectionController::class,'getSectionData']);
+
+// Show
+
+Route::post('get-class',[AcademicClassController::class,'showClass']);

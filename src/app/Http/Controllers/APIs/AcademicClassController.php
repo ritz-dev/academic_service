@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class AcademicClassController extends Controller
 {
@@ -105,6 +106,16 @@ class AcademicClassController extends Controller
         }
     }
 
+    public function showClass(Request $request){
+        try{
+            $class_id = $request->class_id;
+            $academic_class = AcademicClass::with('academicYear')->where('id',$class_id)->get();
+            return response()->json($academic_class, 200);
+        }catch (Exception $e){
+            return $this->handleException($e, 'Failed to fetch the class');
+        }
+    }
+
     public function show(string $id)
     {
         $academic_class = AcademicClass::findOrFail($id);
@@ -124,7 +135,28 @@ class AcademicClassController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try{
+            $request->validate([
+                'name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('academic_classes', 'name')->ignore($id),
+                ],
+                'academicYear' => 'required|string|max:255',
+            ], [
+                'name.unique' => 'This class already exists for the selected academic year'
+            ]);
+
+            $class = AcademicClass::findOrFail($request->class_id);
+            $class->name = $request->name;
+            $class->academic_year_id = $request->academicYear;
+            $class->save();
+
+            return response()->json($class, 200);
+        }catch (Exception $e){
+            return $this->handleException($e, 'Failed to fetch the class');
+        }
     }
 
     /**
