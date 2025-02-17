@@ -40,18 +40,32 @@ class TimeTableController extends Controller
     {
         try {
             $request->validate([
-                'class_id' => 'required|exists:sections,id',
-                'subject_id' => 'required|exists:subjects,id',
-                'teacher_id' => 'required|string',
-                'day_of_week' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-                'time_start' => 'required|date_format:H:i',
-                'time_end' => 'required|date_format:H:i|after:time_start',
-                'term' => 'required|string|max:50',
+                'academicClassId' => 'required|exists:academic_classes,id',
+                'sectionId' => 'required|exists:sections,id',
+                'subjectId' => 'required|exists:subjects,id',
+                'teacherId' => 'required',
+                'room' => 'required',
+                'date' => 'required|date_format:Y-m-d',
+                'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+                'startTime' => 'required|date_format:H:i',
+                'endTime' => 'required|date_format:H:i|after:startTime',
+                'type' => 'required|string|max:50',
             ]);
 
-            $timeTable = TimeTable::create($request->all());
+            $time_table = new TimeTable;
+            $time_table->academic_class_id = $request->academicClassId;
+            $time_table->section_id = $request->sectionId;
+            $time_table->subject_id = $request->subjectId;
+            $time_table->teacher_id = $request->teacherId;
+            $time_table->room = $request->room;
+            $time_table->date = $request->date;
+            $time_table->day = $request->day;
+            $time_table->start_time = $request->startTime;
+            $time_table->end_time = $request->endTime;
+            $time_table->type = $request->type;
+            $time_table->save();
 
-            return response()->json($timeTable, 200);
+            return response()->json($time_table, 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to create timetable');
         }
