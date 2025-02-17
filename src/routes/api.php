@@ -50,3 +50,5 @@ Route::post('get-section-data', [SectionController::class,'getSectionData']);
 Route::post('get-class',[AcademicClassController::class,'showClass']);
 
 Route::post('get-section',[SectionController::class,'showSection']);
+
+Route::post('get-subject',[SubjectController::class,'showSubject']);
