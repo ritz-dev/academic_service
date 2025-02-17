@@ -136,7 +136,7 @@ class AcademicClassController extends Controller
                 'name.unique' => 'This class already exists for the selected academic year'
             ]);
 
-            $class = AcademicClass::findOrFail($request->id);
+            $class = AcademicClass::findOrFail($id);
             $class->name = $request->name;
             $class->academic_year_id = $request->academicYear;
             $class->save();
