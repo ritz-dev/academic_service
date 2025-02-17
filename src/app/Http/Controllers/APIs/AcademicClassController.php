@@ -108,7 +108,7 @@ class AcademicClassController extends Controller
 
     public function showClass(Request $request){
         try{
-            $class_id = $request->class_id;
+            $class_id = $request->slug;
             $academic_class = AcademicClass::with('academicYear')->where('id',$class_id)->get();
             return response()->json($academic_class, 200);
         }catch (Exception $e){
