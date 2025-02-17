@@ -71,51 +71,51 @@ class SubjectController extends Controller
             $request->validate([
                 'section_Id' => 'required',
             ]);
-        
+
             if ($request->has('filterBy') && $request->input('filterBy') !== '') {
                 // Get the academic class id for the section
                 $academicClassId = Section::where('id', $request->input('section_Id'))
                                 ->value('academic_class_id');
-        
+
                 if (!$academicClassId) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Invalid section ID'
                     ], 400);
                 }
-        
+
                 // Retrieve assigned subject IDs as an array
                 $assignedSubjectIds = SectionSubject::where('section_id', $request->input('section_Id'))
                                             ->pluck('subject_id')
                                             ->toArray();
 
                 $assignedSubjectIds = array_map('intval', $assignedSubjectIds);
-                
-        
+
+
                 // Build the query for subjects within the same academic class
                 $subjects = Subject::
                             where('academic_class_id', $academicClassId)->
                             whereNotIn('id', $assignedSubjectIds)->
                             get();
-        
+
                 return response()->json($subjects);
             }
-        
+
             // Old logic: return subjects that are already assigned to the section
             $data = SectionSubject::where('section_id', $request->input('section_Id'))
                             ->join('subjects', 'subjects.id', '=', 'sections_subjects.subject_id')
                             ->select('subjects.id', 'subjects.name', 'subjects.description', 'subjects.code')
                             ->get();
-        
+
             return response()->json($data);
-        
+
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
             ], 500);
         }
-        
+
     }
     /**
      * Store a newly created resource in storage.
@@ -163,7 +163,7 @@ class SubjectController extends Controller
 
             $academicClassId = Section::where('id', $request->input('sectionId'))
                                 ->value('academic_class_id');
-        
+
             if (!$academicClassId) {
                 return response()->json([
                     'success' => false,
@@ -202,6 +202,16 @@ class SubjectController extends Controller
 
             return response()->json($subject, 200);
         } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to fetch the subject');
+        }
+    }
+
+    public function showSubject(Request $request){
+        try{
+            $subject_id = $request->slug;
+            $subject = Subject::with('academicClass')->where('id',$subject_id)->first();
+            return response()->json($subject, 200);
+        }catch (Exception $e){
             return $this->handleException($e, 'Failed to fetch the subject');
         }
     }

@@ -76,8 +76,6 @@ class SectionController extends Controller
                 'name.unique' => 'This section already exists for the selected class.'
             ]);
 
-            logger($request);
-
             $section = Section::create([
                 'id' => Str::uuid(),
                 'name' => $request->input('name'),
@@ -106,6 +104,16 @@ class SectionController extends Controller
         }
     }
 
+    public function showSection(Request $request){
+        try{
+            $section_id = $request->slug;
+            $section = Section::with('academicClass')->where('id',$section_id)->first();
+            return response()->json($section, 200);
+        }catch (Exception $e){
+            return $this->handleException($e, 'Failed to fetch the section');
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -116,10 +124,8 @@ class SectionController extends Controller
 
             $request->validate([
                 'name' => 'required|string|max:255',
-                'academic_class_id'=> 'required|exists:academic_class,id',
+                'academic_class_id'=> 'required|exists:academic_classes,id',
                 'teacher_id' => 'required|string'
-            ], [
-                'name.unique' => 'This class already exists for the selected academic year.'
             ]);
 
             $section->update($request->all());
