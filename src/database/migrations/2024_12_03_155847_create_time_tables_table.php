@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('time_tables', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
+            $table->foreignId('academic_class_id')->constrained('academic_classes')->onDelete('cascade');
             $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->string('teacher_id');
-            $table->string('day_of_week');
-            $table->time('time_start');
-            $table->time('time_end');
-            $table->string('term');
+            $table->string('date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->enum('type',['class', 'extra', 'free', 'holiday']);
             $table->timestamps();
             $table->softDeletes();
         });

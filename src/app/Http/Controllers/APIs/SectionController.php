@@ -96,7 +96,8 @@ class SectionController extends Controller
     {
         try{
             $section_id = $request->slug;
-            $section = Section::with('academicClass')->where('id',$section_id)->first();
+            $section = Section::where('id',$section_id)->select('id','name','teacher_id as teacherId','academic_class_id as academicClassId')->first();
+            $section->academicClassId = (string)$section->academicClassId;
             return response()->json($section, 200);
         }catch (Exception $e){
             return $this->handleException($e, 'Failed to fetch the section');
