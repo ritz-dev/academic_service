@@ -195,18 +195,8 @@ class SubjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        try {
-            $subject = Subject::findOrFail($id);
-
-            return response()->json($subject, 200);
-        } catch (Exception $e) {
-            return $this->handleException($e, 'Failed to fetch the subject');
-        }
-    }
-
-    public function showSubject(Request $request){
         try{
             $subject_id = $request->slug;
             $subject = Subject::with('academicClass')->where('id',$subject_id)->first();

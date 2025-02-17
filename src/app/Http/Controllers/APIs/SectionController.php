@@ -92,19 +92,8 @@ class SectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        try {
-            $section = Section::findOrFail($id);
-
-            return response()->json($section, 200);
-        } catch (Exception $e) {
-
-            return $this->handleException($e, 'Failed to fetch the class');
-        }
-    }
-
-    public function showSection(Request $request){
         try{
             $section_id = $request->slug;
             $section = Section::with('academicClass')->where('id',$section_id)->first();
