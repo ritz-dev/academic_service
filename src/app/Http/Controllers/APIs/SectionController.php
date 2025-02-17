@@ -110,17 +110,19 @@ class SectionController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $section = Section::findOrFail($id);
-
             $request->validate([
                 'name' => 'required|string|max:255',
-                'academic_class_id'=> 'required|exists:academic_classes,id',
-                'teacher_id' => 'required|string'
+                'academicClassId' => 'required|exists:academic_classes,id',
+                'teacherId' => 'required|string'
             ]);
 
-            $section->update($request->all());
+            $section = Section::findOrFail($id);
+            $section->name = $request->name;
+            $section->academic_class_id = $request->academicClassId;
+            $section->teacher_id = $request->teacherId;
+            $section->save();
 
-            return response()->json($section, 200);
+            return response()->json(200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to update the class');
         }

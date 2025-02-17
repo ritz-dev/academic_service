@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->enum('type',['class', 'extra', 'free', 'holiday']);
+            $table->enum('type',['Class', 'Extra', 'Free', 'Holiday','Lecture', 'Lab', 'Tutorial', 'Seminar', 'Self-Study']);
             $table->timestamps();
             $table->softDeletes();
         });
