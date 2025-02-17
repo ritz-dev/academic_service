@@ -16,14 +16,14 @@ class TimeTableResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'day_of_week' => $this->day_of_week,
-            'time_start' => $this->time_start,
-            'time_end' => $this->time_end,
-            'term' => $this->term,
+            'day' => $this->day,
+            'startTime' => $this->start_time,
+            'endTime' => $this->end_time,
+            'type' => $this->type,
             'section' => [
-                'id' => $this->class->id,
-                'name' => $this->class->name,
-                'academic_year_id' => $this->class->academic_year_id,
+                'id' => $this->section->id,
+                'name' => $this->section->name,
+                'academicClassName' => $this->section->academicClass->name,
             ],
             'subject' => [
                 'id' => $this->subject->id,

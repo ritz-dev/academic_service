@@ -18,11 +18,16 @@ class TimeTableController extends Controller
 
     }
 
-    public function getTimeTable()
+    public function getTimeTable(Request $request)
     {
         try {
-            $timetables = TimeTable::with(['academicYear','academicClass','section','subject','attendance'])->get();
-            return response()->json(TimeTableResource::collection($timetables), 200);
+            $section_id = $request->sectionId;
+            $data = TimeTable::with(['academicClass','section','subject'])
+                                    ->where('section_id',$section_id)
+                                    ->get();
+
+            $time_tables = TimeTableResource::collection($data);
+            return response()->json($time_tables, 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to fetch timetables');
         }
