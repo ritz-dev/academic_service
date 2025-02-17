@@ -21,7 +21,7 @@ class TimeTableController extends Controller
     public function getTimeTable()
     {
         try {
-            $timetables = TimeTable::with(['class','subject'])->get();
+            $timetables = TimeTable::with(['academicYear','academicClass','section','subject','attendance'])->get();
             return response()->json(TimeTableResource::collection($timetables), 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to fetch timetables');

@@ -14,13 +14,16 @@ class TimeTableSeeder extends Seeder
     public function run(): void
     {
         TimeTable::create([
+            'academic_year_id' => 1,
+            'academic_class_id' => 1,
             'section_id' => 1,
             'subject_id' => 1,
             'teacher_id' => 1,
-            'day_of_week' => 'Monday',
-            'time_start' => '09:00',
-            'time_end' => '10:30',
-            'term' => 'term 1'
+            'date' => '2025-02-17',
+            'day' => 'Monday',
+            'start_time' => '09:00',
+            'end_time' => '10:30',
+            'type' => 'Lecture'
         ]);
     }
 }

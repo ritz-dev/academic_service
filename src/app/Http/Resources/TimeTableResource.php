@@ -20,7 +20,7 @@ class TimeTableResource extends JsonResource
             'time_start' => $this->time_start,
             'time_end' => $this->time_end,
             'term' => $this->term,
-            'class' => [
+            'section' => [
                 'id' => $this->class->id,
                 'name' => $this->class->name,
                 'academic_year_id' => $this->class->academic_year_id,

@@ -224,7 +224,7 @@ class SubjectController extends Controller
 
             $request->validate([
                 'name' => 'required|string',
-                'code' => 'required|string|unique:subjects,code',
+                'code' => 'required|string',
                 'description' => 'nullable|string',
             ]);
 
