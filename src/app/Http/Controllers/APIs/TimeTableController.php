@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\APIs;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\TimeTableResource;
+use Exception;
 use App\Models\TimeTable;
 use Illuminate\Http\Request;
-use Exception;
+use App\Http\Controllers\Controller;
+use Database\Seeders\TimeTableSeeder;
+use App\Http\Resources\TimeTableResource;
 
 class TimeTableController extends Controller
 {
@@ -74,10 +75,11 @@ class TimeTableController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
         try {
-            $timeTable = TimeTable::with(['class','subject'])->findOrFail($id);
+            $time_table_id = $request->slug;
+            $timeTable = TimeTable::with(['academicClass','section','subject'])->findOrFail($time_table_id);
             return response()->json($timeTable, 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to fetch timetable');
@@ -90,22 +92,35 @@ class TimeTableController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $timetable = TimeTable::findOrFail($id);
-
-            $validatedData = $request->validate([
-                'class_id' => 'required|exists:sections,id',
-                'subject_id' => 'required|exists:subjects,id',
-                'teacher_id' => 'required|string',
-                'day_of_week' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-                'time_start' => 'required|date_format:H:i',
-                'time_end' => 'required|date_format:H:i|after:time_start',
-                'academic_year' => 'required|string',
-                'term' => 'required|string',
+            $request->validate([
+                'academicClassId' => 'required|exists:academic_classes,id',
+                'sectionId' => 'required|exists:sections,id',
+                'subjectId' => 'required|exists:subjects,id',
+                'teacherId' => 'required',
+                'room' => 'required',
+                'date' => 'required|date_format:Y-m-d',
+                'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+                'startTime' => 'required|date_format:H:i',
+                'endTime' => 'required|date_format:H:i|after:startTime',
+                'type' => 'required|string|max:50',
             ]);
 
-            $timetable->update($validatedData);
+            $data = TimeTable::findOrFail($id);
+            $data->academic_class_id = $request->academicClassId;
+            $data->section_id = $request->sectionId;
+            $data->subject_id = $request->subjectId;
+            $data->teacher_id = $request->teacherId;
+            $data->room = $request->room;
+            $data->date = $request->date;
+            $data->day = $request->day;
+            $data->start_time = $request->startTime;
+            $data->end_time = $request->endTime;
+            $data->type = $request->type;
+            $data->save();
 
-            return response()->json(new TimeTableResource($timetable), 200);
+            $time_table = new TimeTableResource($data);
+
+            return response()->json($time_table, 200);
         } catch (Exception $e) {
             return $this->handleException($e, 'Failed to update timetable');
         }
