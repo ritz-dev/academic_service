@@ -158,7 +158,7 @@ class TimeTableSeeder extends Seeder
                 // Insert holiday/weekend record
                 TimeTable::create([
                     'academic_class_id' => null,
-                    'section_id' => null,
+                    'section_id' => 1,
                     'subject_id' => null,
                     'teacher_id' => null,
                     'room' => null,
