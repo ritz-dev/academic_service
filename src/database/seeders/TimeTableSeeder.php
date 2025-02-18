@@ -140,6 +140,14 @@ class TimeTableSeeder extends Seeder
         $teachers = [1, 2, 3, 4]; // Example teacher IDs
         $rooms = ['Room One', 'Room Two', 'Room Three'];
 
+        // Define time slots
+        $time_slots = [
+            ['start' => '9:00', 'end' => '10:30'],
+            ['start' => '10:30', 'end' => '12:00'],
+            ['start' => '12:00', 'end' => '1:00'], // Break-Time
+            ['start' => '1:00', 'end' => '2:30']
+        ];
+
         // Define holidays
         $holidays = [
             '2025-02-12',
@@ -161,23 +169,26 @@ class TimeTableSeeder extends Seeder
                     'type' => 'Holiday'
                 ]);
             } else {
-                // Insert lecture record
-                TimeTable::create([
-                    'academic_class_id' => 1,
-                    'section_id' => 1,
-                    'subject_id' => $subjects[array_rand($subjects)],
-                    'teacher_id' => $teachers[array_rand($teachers)],
-                    'room' => $rooms[array_rand($rooms)],
-                    'date' => $startDate->toDateString(),
-                    'day' => $startDate->format('l'),
-                    'start_time' => '09:00',
-                    'end_time' => '10:30',
-                    'type' => 'Lecture'
-                ]);
+                // Insert 4 sessions per day
+                foreach ($time_slots as $slot) {
+                    TimeTable::create([
+                        'academic_class_id' => ($slot['start'] == '12:00') ? null : 1,
+                        'section_id' => ($slot['start'] == '12:00') ? null : 1,
+                        'subject_id' => ($slot['start'] == '12:00') ? null : $subjects[array_rand($subjects)],
+                        'teacher_id' => ($slot['start'] == '12:00') ? null : $teachers[array_rand($teachers)],
+                        'room' => ($slot['start'] == '12:00') ? 'Cafeteria' : $rooms[array_rand($rooms)],
+                        'date' => $startDate->toDateString(),
+                        'day' => $startDate->format('l'),
+                        'start_time' => $slot['start'],
+                        'end_time' => $slot['end'],
+                        'type' => ($slot['start'] == '12:00') ? 'Break-Time' : 'Lecture'
+                    ]);
+                }
             }
-
             // Move to the next day
             $startDate->addDay();
+
+
         }
 
     }
