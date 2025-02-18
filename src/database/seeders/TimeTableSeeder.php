@@ -144,8 +144,8 @@ class TimeTableSeeder extends Seeder
         $time_slots = [
             ['start' => '9:00', 'end' => '10:30'],
             ['start' => '10:30', 'end' => '12:00'],
-            ['start' => '12:00', 'end' => '1:00'], // Break-Time
-            ['start' => '1:00', 'end' => '2:30']
+            ['start' => '12:00', 'end' => '13:00'], // Break-Time
+            ['start' => '13:00', 'end' => '14:30']
         ];
 
         // Define holidays
