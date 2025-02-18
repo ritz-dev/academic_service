@@ -40,7 +40,7 @@ Route::post('get-exam-schedule',[ExamScheduleController::class,'getExamSchedule'
 Route::post('get-grade',[GradeController::class,'getGrade']);
 Route::post('get-sections',[SectionController::class,'getSection']);
 Route::post('get-subjects',[SubjectController::class,'getSubject']);
-Route::post('get-time-tables',[TimeTableController::class,'getTimeTable']);
+Route::post('get-timetable-data',[TimeTableController::class,'getTimeTable']);
 Route::post('get-class-data', [AcademicClassController::class,'getClassData']);
 Route::post('get-subject-data', [SubjectController::class,'getSubjectData']);
 Route::post('get-section-data', [SectionController::class,'getSectionData']);
