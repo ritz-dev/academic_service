@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('time_tables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('academic_class_id')->constrained('academic_classes')->onDelete('cascade');
-            $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
-            $table->string('teacher_id');
-            $table->string('room');
-            $table->date('date');
-            $table->enum('day',['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']);
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->enum('type',['Class', 'Extra', 'Free', 'Holiday','Lecture', 'Lab', 'Tutorial', 'Seminar', 'Self-Study','Break-Time']);
+            $table->string('academic_class_id')->nullable();
+            $table->string('section_id')->nullable();
+            $table->string('subject_id')->nullable();
+            $table->string('teacher_id')->nullable();
+            $table->string('room')->nullable();
+            $table->date('date')->nullable();
+            $table->enum('day',['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->enum('type',['Class', 'Extra', 'Free', 'Holiday','Lecture', 'Lab', 'Tutorial', 'Seminar', 'Self-Study','Break-Time'])->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
