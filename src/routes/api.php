@@ -22,7 +22,7 @@ Route::apiResource('grades', GradeController::class);
 Route::apiResource('subjects', SubjectController::class);
 Route::apiResource('section-subjects', SectionSubjectController::class);
 Route::apiResource('sections', SectionController::class);
-Route::apiResource('academic_class_subjects',AcademicClassSubjectController::class);
+Route::apiResource('academic-class-subjects',AcademicClassSubjectController::class);
 Route::apiResource('time-tables', TimeTableController::class);
 Route::apiResource('exams',ExamController::class);
 Route::get('attendances', [AttendanceController::class, 'index']);
