@@ -48,7 +48,7 @@ class TimeTableController extends Controller
                 'sectionId' => 'required|exists:sections,id',
                 'subjectId' => 'nullable|exists:subjects,id',
                 'teacherId' => 'nullable',
-                'room' => 'required',
+                'room' => 'nullable',
                 'date' => 'required|date_format:Y-m-d',
                 'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
                 'startTime' => 'nullable|date_format:H:i',
