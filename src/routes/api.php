@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIs\ExamController;
 use App\Http\Controllers\APIs\GradeController;
+use App\Http\Controllers\APIs\HolidayController;
 use App\Http\Controllers\APIs\SectionController;
 use App\Http\Controllers\APIs\SubjectController;
 use App\Http\Controllers\APIs\TimeTableController;
@@ -54,3 +55,9 @@ Route::post('get-section',[SectionController::class,'show']);
 Route::post('get-subject',[SubjectController::class,'show']);
 
 Route::post('get-time-table',[TimeTableController::class,'show']);
+
+// Holiday
+
+Route::post('get-holiday-data',[HolidayController::class,'getHolidayData']);
+
+Route::post('holidays',[HolidayController::class,'store']);

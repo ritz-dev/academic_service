@@ -100,6 +100,9 @@ class AcademicClassController extends Controller
     public function show(Request $request)
     {
         try{
+            $request->validate([
+                'slug' => 'required|exists:academic_classes,id'
+            ]);
             $class_id = $request->slug;
             $academic_class = AcademicClass::where('id',$class_id)->select('id','name','academic_year_id as academicYear')->first();
             $academic_class->academicYear = (string)$academic_class->academicYear;
