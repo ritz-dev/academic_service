@@ -46,13 +46,13 @@ class TimeTableController extends Controller
             $request->validate([
                 'academicClassId' => 'required|exists:academic_classes,id',
                 'sectionId' => 'required|exists:sections,id',
-                'subjectId' => 'required|exists:subjects,id',
-                'teacherId' => 'required',
+                'subjectId' => 'nullable|exists:subjects,id',
+                'teacherId' => 'nullable',
                 'room' => 'required',
                 'date' => 'required|date_format:Y-m-d',
                 'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-                'startTime' => 'required|date_format:H:i',
-                'endTime' => 'required|date_format:H:i|after:startTime',
+                'startTime' => 'nullable|date_format:H:i',
+                'endTime' => 'nullable|date_format:H:i|after:startTime',
                 'type' => 'required|string|in:Class, Extra, Free, Holiday,Lecture, Lab, Tutorial, Seminar, Self-Study,Break-Time',
             ]);
 
