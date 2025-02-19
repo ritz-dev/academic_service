@@ -12,7 +12,7 @@ class TimeTable extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['academic_class_id','section_id','subject_id','teacher_id','room','date','day','start_time','end_time','type'];
+    protected $fillable = ['title','academic_class_id','section_id','subject_id','teacher_id','room','date','day','start_time','end_time','type'];
 
     protected $hidden = ["created_at","updated_at","deleted_at"];
 

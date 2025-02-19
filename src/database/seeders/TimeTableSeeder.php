@@ -157,6 +157,7 @@ class TimeTableSeeder extends Seeder
             if ($startDate->isWeekend() || in_array($startDate->toDateString(), $holidays)) {
                 // Insert holiday/weekend record
                 TimeTable::create([
+                    'title' => 'Holiday',
                     'academic_class_id' => null,
                     'section_id' => 1,
                     'subject_id' => null,
@@ -172,6 +173,7 @@ class TimeTableSeeder extends Seeder
                 // Insert 4 sessions per day
                 foreach ($time_slots as $slot) {
                     TimeTable::create([
+                        'title' => ($slot['start'] == '12:00') ? 'Break-Time' : 'Lecture',
                         'academic_class_id' => 1,
                         'section_id' => 1,
                         'subject_id' => ($slot['start'] == '12:00') ? null : $subjects[array_rand($subjects)],

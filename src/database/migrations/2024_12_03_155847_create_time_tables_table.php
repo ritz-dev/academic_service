@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('time_tables', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('academic_class_id')->nullable();
             $table->string('section_id')->nullable();
             $table->string('subject_id')->nullable();
