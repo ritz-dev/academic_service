@@ -50,7 +50,7 @@ class TimeTableController extends Controller
                 'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
                 'startTime' => 'required|date_format:H:i',
                 'endTime' => 'required|date_format:H:i|after:startTime',
-                'type' => 'required|string|max:50',
+                'type' => 'required|string|in:Class, Extra, Free, Holiday,Lecture, Lab, Tutorial, Seminar, Self-Study,Break-Time',
             ]);
 
             $time_table = new TimeTable;
