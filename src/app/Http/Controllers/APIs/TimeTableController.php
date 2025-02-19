@@ -22,6 +22,9 @@ class TimeTableController extends Controller
     public function getTimeTable(Request $request)
     {
         try {
+            $request->validate([
+                'sectionId' => 'required|exists:sections,id',
+            ]);
             $section_id = $request->sectionId;
             $data = TimeTable::with(['academicClass','section','subject'])
                                     ->where('section_id',$section_id)
