@@ -14,18 +14,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
        $this->call([
-        AcademicYearSeeder::class,
-        AcademicClassSeeder::class,
-        GradeSeeder::class,
-        SubjectSeeder::class,
-        SectionSeeder::class,
-        TimeTableSeeder::class,
-        ExamSeeder::class,
-        ExamScheduleSeeder::class,
-        ExamTeacherAssignmentSeeder::class,
-        ExamStudentAssignmentSeeder::class,
-        SectionSubjectSeeder::class,
-        HolidaySeeder::class
+            AcademicYearSeeder::class,
+            AcademicClassSeeder::class,
+            GradeSeeder::class,
+            SubjectSeeder::class,
+            SectionSeeder::class,
+            TimeTableSeeder::class,
+            ExamSeeder::class,
+            ExamScheduleSeeder::class,
+            ExamTeacherAssignmentSeeder::class,
+            ExamStudentAssignmentSeeder::class,
+            SectionSubjectSeeder::class,
+            HolidaySeeder::class
        ]);
     }
 }
