@@ -172,8 +172,8 @@ class TimeTableSeeder extends Seeder
                 // Insert 4 sessions per day
                 foreach ($time_slots as $slot) {
                     TimeTable::create([
-                        'academic_class_id' => ($slot['start'] == '12:00') ? null : 1,
-                        'section_id' => ($slot['start'] == '12:00') ? null : 1,
+                        'academic_class_id' => 1,
+                        'section_id' => 1,
                         'subject_id' => ($slot['start'] == '12:00') ? null : $subjects[array_rand($subjects)],
                         'teacher_id' => ($slot['start'] == '12:00') ? null : $teachers[array_rand($teachers)],
                         'room' => ($slot['start'] == '12:00') ? 'Cafeteria' : $rooms[array_rand($rooms)],

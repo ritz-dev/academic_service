@@ -22,17 +22,17 @@ class TimeTableResource extends JsonResource
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
             'type' => $this->type,
-            // 'section' => [
-            //     'id' => $this->section->id,
-            //     'name' => $this->section->name,
-            //     'academicClassName' => $this->section->academicClass->name,
-            // ],
-            // 'subject' => [
-            //     'id' => $this->subject->id,
-            //     'name' => $this->subject->name,
-            //     'code' => $this->subject->code,
-            //     'description' => $this->subject->description,
-            // ],
+            'section' => [
+                'id' => $this->section->id,
+                'name' => $this->section->name,
+                'academicClassName' => $this->section->academicClass->name,
+            ],
+            'subject' => [
+                'id' => $this->subject != null ? $this->subject->id : null,
+                'name' => $this->subject != null ? $this->subject->name : null,
+                'code' => $this->subject != null ? $this->subject->code : null,
+                'description' => $this->subject != null ? $this->subject->description : null,
+            ],
             'teacher' => $this->teacher_id,
         ];
     }

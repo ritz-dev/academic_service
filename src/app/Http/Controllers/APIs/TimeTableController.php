@@ -21,7 +21,7 @@ class TimeTableController extends Controller
 
     public function getTimeTable(Request $request)
     {
-        // try {
+        try {
             $section_id = $request->sectionId;
             $data = TimeTable::with(['academicClass','section','subject'])
                                     ->where('section_id',$section_id)
@@ -29,9 +29,9 @@ class TimeTableController extends Controller
 
             $time_tables = TimeTableResource::collection($data);
             return response()->json($time_tables, 200);
-        // } catch (Exception $e) {
-        //     return $this->handleException($e, 'Failed to fetch timetables');
-        // }
+        } catch (Exception $e) {
+            return $this->handleException($e, 'Failed to fetch timetables');
+        }
     }
 
     /**
