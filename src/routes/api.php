@@ -24,7 +24,7 @@ Route::apiResource('subjects', SubjectController::class);
 Route::apiResource('section-subjects', SectionSubjectController::class);
 Route::apiResource('sections', SectionController::class);
 Route::apiResource('academic-class-subjects',AcademicClassSubjectController::class);
-Route::apiResource('time-tables', TimeTableController::class);
+Route::apiResource('timetables', TimeTableController::class);
 Route::apiResource('exams',ExamController::class);
 Route::get('attendances', [AttendanceController::class, 'index']);
 Route::post('create-subject',[SubjectController::class,'createSubject']);
@@ -54,7 +54,7 @@ Route::post('get-section',[SectionController::class,'show']);
 
 Route::post('get-subject',[SubjectController::class,'show']);
 
-Route::post('get-time-table',[TimeTableController::class,'show']);
+Route::post('get-timetable',[TimeTableController::class,'show']);
 
 // Holiday
 
