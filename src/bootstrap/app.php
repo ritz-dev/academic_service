@@ -22,3 +22,5 @@ return Application::configure(basePath: dirname(__DIR__))
     //     'file' => __DIR__.'/../routes/api.php',
     //     'prefix' => 'api-gateway', // Change the prefix here
     // ],
+
+    // api: __DIR__.'/../routes/api.php',

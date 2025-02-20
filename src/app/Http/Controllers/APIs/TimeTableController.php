@@ -44,7 +44,7 @@ class TimeTableController extends Controller
     {
         try {
             $request->validate([
-                'title' => 'required',
+                'title' => 'required|string',
                 'academicClassId' => 'required|exists:academic_classes,id',
                 'sectionId' => 'required|exists:sections,id',
                 'subjectId' => 'nullable|exists:subjects,id',
@@ -53,7 +53,7 @@ class TimeTableController extends Controller
                 'date' => 'required|date_format:Y-m-d',
                 'startTime' => 'nullable|date_format:H:i',
                 'endTime' => 'nullable|date_format:H:i|after:startTime',
-                'type' => 'required|string|in:Class, Extra, Free, Holiday,Lecture, Lab, Tutorial, Seminar, Self-Study,Break-Time',
+                'type' => 'required|string',
             ]);
 
             $time_table = new TimeTable;
