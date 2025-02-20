@@ -43,8 +43,11 @@ class TimeTableController extends Controller
     public function store(Request $request)
     {
         try {
+
             $request->validate([
-                'title' => 'required|string',
+                'title' => ['required', 'array'], // Ensure title is an array (object in JSON)
+                'title.label' => ['required', 'string'], // Validate label property
+                'title.value' => ['required', 'string'], // Validate value property
                 'academicClassId' => 'required|exists:academic_classes,id',
                 'sectionId' => 'required|exists:sections,id',
                 'subjectId' => 'nullable|exists:subjects,id',
@@ -57,7 +60,7 @@ class TimeTableController extends Controller
             ]);
 
             $time_table = new TimeTable;
-            $time_table->title = $request->title;
+            $time_table->title = $request->title['label'];
             $time_table->academic_class_id = $request->academicClassId;
             $time_table->section_id = $request->sectionId;
             $time_table->subject_id = $request->subjectId;
@@ -96,7 +99,9 @@ class TimeTableController extends Controller
     {
         try {
             $request->validate([
-                'title' => 'required',
+                'title' => ['required', 'array'], // Ensure title is an array (object in JSON)
+                'title.label' => ['required', 'string'], // Validate label property
+                'title.value' => ['required', 'string'],
                 'academicClassId' => 'required|exists:academic_classes,id',
                 'sectionId' => 'required|exists:sections,id',
                 'subjectId' => 'required|exists:subjects,id',
@@ -109,7 +114,7 @@ class TimeTableController extends Controller
             ]);
 
             $data = TimeTable::findOrFail($id);
-            $data->title = $request->title;
+            $data->title = $request->title['label'];
             $data->academic_class_id = $request->academicClassId;
             $data->section_id = $request->sectionId;
             $data->subject_id = $request->subjectId;
