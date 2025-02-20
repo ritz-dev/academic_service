@@ -153,6 +153,8 @@ class TimeTableSeeder extends Seeder
             '2025-02-12',
         ];
 
+        $exam_dates = ['2025-02-15', '2025-02-20', '2025-02-25'];
+
         while ($startDate->lte($endDate)) {
             if ($startDate->isWeekend() || in_array($startDate->toDateString(), $holidays)) {
                 // Insert holiday/weekend record
@@ -166,13 +168,27 @@ class TimeTableSeeder extends Seeder
                     'date' => $startDate->toDateString(),
                     'start_time' => null,
                     'end_time' => null,
-                    'is_holiday' => true
+                    'type' => 'Holiday'
+                ]);
+            }elseif (in_array($startDate->toDateString(), $exam_dates)) {
+                // Insert exam record
+                TimeTable::create([
+                    'title' => 'Exam',
+                    'academic_class_id' => 1,
+                    'section_id' => 1,
+                    'subject_id' => $subjects[array_rand($subjects)],
+                    'teacher_id' => $teachers[array_rand($teachers)],
+                    'room' => 'Exam Hall',
+                    'date' => $startDate->toDateString(),
+                    'start_time' => '9:00',
+                    'end_time' => '12:00',
+                    'type' => 'Exam'
                 ]);
             } else {
                 // Insert 4 sessions per day
                 foreach ($time_slots as $slot) {
                     TimeTable::create([
-                        'title' => ($slot['start'] == '12:00') ? 'Break-Time' : 'Lecture',
+                        'title' => ($slot['start'] == '12:00') ? 'Break-Time' : $subjects[array_rand($subjects)],
                         'academic_class_id' => 1,
                         'section_id' => 1,
                         'subject_id' => ($slot['start'] == '12:00') ? null : $subjects[array_rand($subjects)],
@@ -181,7 +197,7 @@ class TimeTableSeeder extends Seeder
                         'date' => $startDate->toDateString(),
                         'start_time' => $slot['start'],
                         'end_time' => $slot['end'],
-                        'is_holiday' => false
+                        'type' => 'Lecture'
                     ]);
                 }
             }

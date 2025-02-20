@@ -20,7 +20,7 @@ class TimeTableResource extends JsonResource
             'date' => $this->date,
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
-            'isHoliday' => $this->is_holiday,
+            'type' => $this->type,
             'section' => [
                 'id' => $this->section->id,
                 'name' => $this->section->name,

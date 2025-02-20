@@ -56,6 +56,7 @@ class TimeTableController extends Controller
                 'date' => 'required|date_format:Y-m-d',
                 'startTime' => 'nullable|date_format:H:i',
                 'endTime' => 'nullable|date_format:H:i|after:startTime',
+                'type' => 'required|in:Lecture,Holiday,Exam'
             ]);
 
             $time_table = new TimeTable;
@@ -68,7 +69,7 @@ class TimeTableController extends Controller
             $time_table->date = $request->date;
             $time_table->start_time = $request->startTime;
             $time_table->end_time = $request->endTime;
-            $time_table->is_holiday = $request->isHoliday;
+            $time_table->type = $request->type;
             $time_table->save();
 
             return response()->json($time_table, 200);
@@ -109,6 +110,7 @@ class TimeTableController extends Controller
                 'date' => 'required|date_format:Y-m-d',
                 'startTime' => 'required|date_format:H:i',
                 'endTime' => 'required|date_format:H:i|after:startTime',
+                'type' => 'required|in:Lecture,Holiday,Exam'
             ]);
 
             $data = TimeTable::findOrFail($id);
@@ -121,7 +123,7 @@ class TimeTableController extends Controller
             $data->date = $request->date;
             $data->start_time = $request->startTime;
             $data->end_time = $request->endTime;
-            $data->is_holiday = $request->isHoliday;
+            $data->type = $request->type;
             $data->save();
 
             $time_table = new TimeTableResource($data);
