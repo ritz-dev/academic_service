@@ -51,7 +51,6 @@ class TimeTableController extends Controller
                 'teacherId' => 'nullable',
                 'room' => 'nullable',
                 'date' => 'required|date_format:Y-m-d',
-                'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
                 'startTime' => 'nullable|date_format:H:i',
                 'endTime' => 'nullable|date_format:H:i|after:startTime',
                 'type' => 'required|string|in:Class, Extra, Free, Holiday,Lecture, Lab, Tutorial, Seminar, Self-Study,Break-Time',
@@ -65,7 +64,6 @@ class TimeTableController extends Controller
             $time_table->teacher_id = $request->teacherId;
             $time_table->room = $request->room;
             $time_table->date = $request->date;
-            $time_table->day = $request->day;
             $time_table->start_time = $request->startTime;
             $time_table->end_time = $request->endTime;
             $time_table->type = $request->type;
@@ -105,7 +103,6 @@ class TimeTableController extends Controller
                 'teacherId' => 'required',
                 'room' => 'required',
                 'date' => 'required|date_format:Y-m-d',
-                'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
                 'startTime' => 'required|date_format:H:i',
                 'endTime' => 'required|date_format:H:i|after:startTime',
                 'type' => 'required|string|max:50',
@@ -119,7 +116,6 @@ class TimeTableController extends Controller
             $data->teacher_id = $request->teacherId;
             $data->room = $request->room;
             $data->date = $request->date;
-            $data->day = $request->day;
             $data->start_time = $request->startTime;
             $data->end_time = $request->endTime;
             $data->type = $request->type;

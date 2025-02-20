@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('teacher_id')->nullable();
             $table->string('room')->nullable();
             $table->date('date')->nullable();
-            $table->enum('day',['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->enum('type',['Class', 'Extra', 'Free', 'Holiday','Lecture', 'Lab', 'Tutorial', 'Seminar', 'Self-Study','Break-Time'])->nullable();

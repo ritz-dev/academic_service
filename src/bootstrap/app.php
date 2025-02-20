@@ -17,3 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+    // api: [
+    //     'file' => __DIR__.'/../routes/api.php',
+    //     'prefix' => 'api-gateway', // Change the prefix here
+    // ],

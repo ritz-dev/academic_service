@@ -17,8 +17,6 @@ class TimeTableResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'room' => $this->room,
-            'day' => $this->day,
             'date' => $this->date,
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,

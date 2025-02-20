@@ -164,7 +164,6 @@ class TimeTableSeeder extends Seeder
                     'teacher_id' => null,
                     'room' => null,
                     'date' => $startDate->toDateString(),
-                    'day' => $startDate->format('l'),
                     'start_time' => null,
                     'end_time' => null,
                     'type' => 'Holiday'
@@ -180,7 +179,6 @@ class TimeTableSeeder extends Seeder
                         'teacher_id' => ($slot['start'] == '12:00') ? null : $teachers[array_rand($teachers)],
                         'room' => ($slot['start'] == '12:00') ? 'Cafeteria' : $rooms[array_rand($rooms)],
                         'date' => $startDate->toDateString(),
-                        'day' => $startDate->format('l'),
                         'start_time' => $slot['start'],
                         'end_time' => $slot['end'],
                         'type' => ($slot['start'] == '12:00') ? 'Break-Time' : 'Lecture'
