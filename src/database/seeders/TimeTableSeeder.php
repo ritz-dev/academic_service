@@ -166,7 +166,7 @@ class TimeTableSeeder extends Seeder
                     'date' => $startDate->toDateString(),
                     'start_time' => null,
                     'end_time' => null,
-                    'type' => 'Holiday'
+                    'is_holiday' => true
                 ]);
             } else {
                 // Insert 4 sessions per day
@@ -181,13 +181,12 @@ class TimeTableSeeder extends Seeder
                         'date' => $startDate->toDateString(),
                         'start_time' => $slot['start'],
                         'end_time' => $slot['end'],
-                        'type' => ($slot['start'] == '12:00') ? 'Break-Time' : 'Lecture'
+                        'is_holiday' => false
                     ]);
                 }
             }
             // Move to the next day
             $startDate->addDay();
-
 
         }
 

@@ -14,10 +14,6 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->foreignId('academic_class_id')->constrianed('academic_classes')->onDelete('cascade');
-            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

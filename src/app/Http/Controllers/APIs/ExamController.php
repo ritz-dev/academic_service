@@ -43,10 +43,6 @@ class ExamController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date',
-                'grade_id' => 'required|exists:grades,id',
-                'academic_year_id' => 'required|exists:academic_years,id',
             ]);
 
             $exam = Exam::create($request->all());
@@ -88,10 +84,6 @@ class ExamController extends Controller
 
             $request->validate([
                 'name' => 'required|string',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date',
-                'grade_id' => 'required|exists:grades,id',
-                'academic_year_id' => 'required|exists:academic_years,id',
             ]);
 
             $exam->update($request->all());

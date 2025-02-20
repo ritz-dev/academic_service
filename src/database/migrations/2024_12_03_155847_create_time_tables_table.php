@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('date')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
-            $table->string('type')->nullable();
+            $table->boolean('is_holiday');
             $table->timestamps();
             $table->softDeletes();
         });
